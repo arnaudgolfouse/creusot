@@ -35,10 +35,20 @@ struct Args {
     filter: Option<String>,
 }
 
+const CARGO_MANIFEST_DIR: &str = env!("CARGO_MANIFEST_DIR");
+
 fn main() {
     let args = Args::parse();
-    let why3_path = std::env::var("WHY3_PATH").unwrap_or_else(|_| "why3".into());
-    let config_path = std::env::var("WHY3_CONFIG");
+
+    let ci_dir_path = std::path::Path::new(CARGO_MANIFEST_DIR).parent().unwrap().join("ci");
+
+    let ci_script_path = ci_dir_path.join("install-dependencies.sh");
+    Command::new(ci_script_path).spawn().unwrap().wait().unwrap();
+
+    let ci_dep_path = ci_dir_path.join("dependencies");
+
+    let why3_path = ci_dep_path.join("_opam").join("bin").join("why3");
+    let config_path = ci_dep_path.join("why3.conf");
     let mut out = StandardStream::stdout(ColorChoice::Always);
     let orange = Color::Ansi256(214);
 
@@ -139,10 +149,8 @@ fn main() {
                 ReplayLevel::All => {}
             };
 
-            if let Ok(ref config) = config_path {
-                command.args(&["-C", config]);
-                // command.arg(&format!("--extra-config={config}"));
-            }
+            command.arg("-C");
+            command.arg(config_path.clone());
             command.arg(sessiondir);
             output = command.ok();
             if output.is_ok() {
