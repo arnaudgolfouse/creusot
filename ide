@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
 SCRIPTPATH=$(dirname "$BASH_SOURCE")
-why3 --warn-off=unused_variable --warn-off=clone_not_abstract --warn-off=axiom_abstract ide -L $SCRIPTPATH/prelude $@
+DEPENDENCIESPATH="$SCRIPTPATH/ci/dependencies"
+if [ -f "$DEPENDENCIESPATH/_opam/bin/why3" ]; then
+	$DEPENDENCIESPATH/_opam/bin/why3 -C $DEPENDENCIESPATH/why3.conf --warn-off=unused_variable --warn-off=clone_not_abstract --warn-off=axiom_abstract ide -L $SCRIPTPATH/prelude $@
+else
+	echo "Please run the `ci/install-dependencies` script first"
+	exit 1
+fi
