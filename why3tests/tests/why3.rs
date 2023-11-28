@@ -42,8 +42,11 @@ fn main() {
 
     let ci_dir_path = std::path::Path::new(CARGO_MANIFEST_DIR).parent().unwrap().join("ci");
 
-    let ci_script_path = ci_dir_path.join("install-dependencies.sh");
-    Command::new(ci_script_path).spawn().unwrap().wait().unwrap();
+    let ci_script_path = ci_dir_path.join("install-dependencies.py");
+    let install_script_result = Command::new("python3").arg(ci_script_path).status().unwrap();
+    if !install_script_result.success() {
+        panic!("installation of test dependencies failed !")
+    }
 
     let ci_dep_path = ci_dir_path.join("dependencies");
 
