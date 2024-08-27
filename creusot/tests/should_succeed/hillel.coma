@@ -2141,7 +2141,7 @@ module Hillel_Score_Impl
   
   let%span shillel8 = "../hillel.rs" 122 10 122 19
   
-  let%span span9 = "../../../../creusot-contracts/src/logic/int.rs" 55 4 55 12
+  let%span span9 = "../../../../creusot-contracts/src/logic/int.rs" 73 4 73 12
   
   let%span span10 = "../hillel.rs" 121 0 121 8
   
@@ -2312,7 +2312,7 @@ module Hillel_Fulcrum
   
   let%span span56 = "../../../../creusot-contracts/src/std/slice.rs" 403 4 403 10
   
-  let%span span57 = "../../../../creusot-contracts/src/logic/int.rs" 55 4 55 12
+  let%span span57 = "../../../../creusot-contracts/src/logic/int.rs" 73 4 73 12
   
   let%span span58 = "../../../../creusot-contracts/src/std/num.rs" 221 26 221 59
   
