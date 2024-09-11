@@ -1,14 +1,14 @@
 extern crate creusot_contracts;
-use creusot_contracts::{ghost::GhostVec, *};
+use creusot_contracts::{logic::Seq, *};
 
 pub fn ghost_vec() {
-    let mut v = GhostVec::new();
-    proof_assert!(forall<i: Int> v@.get(i) == None);
+    let mut v = Seq::new_ghost();
+    proof_assert!(forall<i: Int> v.get_logic(i) == None);
     let length1 = ghost! {
         v.push(21);
         v.len()
     };
-    proof_assert!(v@[0] == 21i32);
+    proof_assert!(v[0] == 21i32);
     proof_assert!(length1.inner() == 1);
 
     let length2 = ghost! {
@@ -17,7 +17,7 @@ pub fn ghost_vec() {
         v.len()
     };
     proof_assert!(length2.inner() == 3);
-    proof_assert!(v@[0] == 21i32 && v@[1] == 10i32 && v@[2] == 30i32);
+    proof_assert!(v[0] == 21i32 && v[1] == 10i32 && v[2] == 30i32);
 
     let get1 = ghost!(v.get(*Int::new(1)));
     let get2 = ghost!(v.get(*Int::new(3)));
@@ -29,7 +29,7 @@ pub fn ghost_vec() {
             *x = 42;
         }
     };
-    proof_assert!(v@[0] == 42i32);
+    proof_assert!(v[0] == 42i32);
 
     let pop1 = ghost!(v.pop());
     let pop2 = ghost!(v.pop());
