@@ -17,12 +17,7 @@
 </theory>
 <theory name="M_option__map" proved="true">
  <goal name="vc_map" proved="true">
- <proof prover="0"><result status="valid" time="0.019784" steps="161"/></proof>
- </goal>
-</theory>
-<theory name="M_option__map__qyClosure2" proved="true">
- <goal name="vc_m_option__map__qyClosure2" proved="true">
- <proof prover="0"><result status="valid" time="0.009936" steps="7"/></proof>
+ <proof prover="0"><result status="valid" time="0.019784" steps="164"/></proof>
  </goal>
 </theory>
 <theory name="M_option__inspect" proved="true">
@@ -32,17 +27,7 @@
 </theory>
 <theory name="M_option__map_or" proved="true">
  <goal name="vc_map_or" proved="true">
- <proof prover="0"><result status="valid" time="0.033770" steps="168"/></proof>
- </goal>
-</theory>
-<theory name="M_option__map_or__qyClosure2" proved="true">
- <goal name="vc_m_option__map_or__qyClosure2" proved="true">
- <proof prover="0"><result status="valid" time="0.010947" steps="7"/></proof>
- </goal>
-</theory>
-<theory name="M_option__map_or__qyClosure6" proved="true">
- <goal name="vc_m_option__map_or__qyClosure6" proved="true">
- <proof prover="0"><result status="valid" time="0.012953" steps="7"/></proof>
+ <proof prover="0"><result status="valid" time="0.033770" steps="205"/></proof>
  </goal>
 </theory>
 <theory name="M_option__ok_or" proved="true">
@@ -72,42 +57,17 @@
 </theory>
 <theory name="M_option__and_then" proved="true">
  <goal name="vc_and_then" proved="true">
- <proof prover="0"><result status="valid" time="0.030366" steps="242"/></proof>
- </goal>
-</theory>
-<theory name="M_option__and_then__qyClosure1" proved="true">
- <goal name="vc_m_option__and_then__qyClosure1" proved="true">
- <proof prover="0"><result status="valid" time="0.012353" steps="35"/></proof>
+ <proof prover="0"><result status="valid" time="0.030366" steps="407"/></proof>
  </goal>
 </theory>
 <theory name="M_option__filter" proved="true">
  <goal name="vc_filter" proved="true">
- <proof prover="0"><result status="valid" time="0.015213" steps="88"/></proof>
- </goal>
-</theory>
-<theory name="M_option__filter__qyClosure1" proved="true">
- <goal name="vc_m_option__filter__qyClosure1" proved="true">
- <proof prover="0"><result status="valid" time="0.011992" steps="5"/></proof>
- </goal>
-</theory>
-<theory name="M_option__filter__qyClosure2" proved="true">
- <goal name="vc_m_option__filter__qyClosure2" proved="true">
- <proof prover="0"><result status="valid" time="0.009875" steps="5"/></proof>
+ <proof prover="0"><result status="valid" time="0.015213" steps="185"/></proof>
  </goal>
 </theory>
 <theory name="M_option__is_some_and" proved="true">
  <goal name="vc_is_some_and" proved="true">
- <proof prover="0"><result status="valid" time="0.023735" steps="68"/></proof>
- </goal>
-</theory>
-<theory name="M_option__is_some_and__qyClosure0" proved="true">
- <goal name="vc_m_option__is_some_and__qyClosure0" proved="true">
- <proof prover="0"><result status="valid" time="0.013147" steps="5"/></proof>
- </goal>
-</theory>
-<theory name="M_option__is_some_and__qyClosure1" proved="true">
- <goal name="vc_m_option__is_some_and__qyClosure1" proved="true">
- <proof prover="0"><result status="valid" time="0.010073" steps="5"/></proof>
+ <proof prover="0"><result status="valid" time="0.023735" steps="81"/></proof>
  </goal>
 </theory>
 <theory name="M_option__or_else" proved="true">
@@ -132,17 +92,7 @@
 </theory>
 <theory name="M_option__take_if" proved="true">
  <goal name="vc_take_if" proved="true">
- <proof prover="0"><result status="valid" time="0.034598" steps="449"/></proof>
- </goal>
-</theory>
-<theory name="M_option__take_if__qyClosure1" proved="true">
- <goal name="vc_m_option__take_if__qyClosure1" proved="true">
- <proof prover="0"><result status="valid" time="0.012087" steps="13"/></proof>
- </goal>
-</theory>
-<theory name="M_option__take_if__qyClosure2" proved="true">
- <goal name="vc_m_option__take_if__qyClosure2" proved="true">
- <proof prover="0"><result status="valid" time="0.012757" steps="18"/></proof>
+ <proof prover="0"><result status="valid" time="0.034598" steps="821"/></proof>
  </goal>
 </theory>
 <theory name="M_option__copied_cloned" proved="true">
@@ -167,7 +117,7 @@
 </theory>
 <theory name="M_option__resolve" proved="true">
  <goal name="vc_resolve" proved="true">
- <proof prover="0"><result status="valid" time="0.069181" steps="850"/></proof>
+ <proof prover="0"><result status="valid" time="0.069181" steps="809"/></proof>
  </goal>
 </theory>
 </file>
