@@ -3,7 +3,7 @@
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="Z3" version="4.12.4" timelimit="0.5" steplimit="0" memlimit="1000"/>
-<prover id="1" name="CVC4" version="1.8" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC4" version="1.8" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC5" version="1.0.5" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="3" name="Alt-Ergo" version="2.6.0" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="coma" proved="true">
@@ -1307,50 +1307,18 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__deque__qyi3159098507555769709__produces_refl" proved="true">
  <goal name="vc_produces_refl" proved="true">
- <transf name="remove" proved="true" arg1="empty,singleton">
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_refl.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_refl.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_refl.0.0.0" proved="true">
-    <transf name="inline_goal" proved="true" >
-     <goal name="vc_produces_refl.0.0.0.0" proved="true">
-     <proof prover="2" timelimit="6" memlimit="4000"><result status="valid" time="0.117833" steps="37103"/></proof>
-     </goal>
-    </transf>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="1"><result status="valid" time="0.035150" steps="10627"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__deque__qyi3159098507555769709__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <transf name="inline_goal" proved="true" >
-     <goal name="vc_produces_trans.0.0.0.0" proved="true">
-     <transf name="remove" proved="true" arg1="singleton,snoc,slice&#39;eq,id,index_logic&#39;0,view&#39;1,Comm1,Assoc,Comm,Unitary,NonTrivialRing,Abs_pos,([&lt;-])&#39;def,cons&#39;spec,cons&#39;spec&#39;0,snoc&#39;spec,snoc&#39;spec&#39;0,snoc&#39;spec&#39;1,([..])&#39;spec,([..])&#39;spec&#39;0,([..])&#39;def,([_..])&#39;def,(++)&#39;spec&#39;0,to_int_in_bounds,extensionality,slice&#39;inj,Abs_le1,Abs_le,Div_bound1,to_ref_seq&#39;0_spec1">
-      <goal name="vc_produces_trans.0.0.0.0.0" proved="true">
-      <transf name="remove" proved="true" arg1="([]),cons,( *_),(^_),borrow_logic,get_id,usize&#39;maxInt,usize&#39;minInt,usize&#39;eq,min,max,to_int,in_bounds,Assoc,Unit_def_l,Unit_def_r,Inv_def_l,Inv_def_r,Mul_distr_l,Mul_distr_r,Refl,Trans,Antisymm,Total,ZeroLessOne,CompatOrderAdd,CompatOrderMult,Div_mod,Div_sign_pos,Div_sign_neg,Mod_sign_pos,Mod_sign_neg,Rounds_toward_zero,Div_1,Mod_1,Div_inf,Mod_inf,Div_mult,Mod_mult,empty&#39;def,set&#39;spec&#39;0,set&#39;def,singleton&#39;spec,singleton&#39;spec&#39;0,cons&#39;spec&#39;1,([.._])&#39;def,(++)&#39;spec&#39;1,usize&#39;inj,slice&#39;invariant,spec,Abs_le,Div_bound,Mod_bound1,Mod_bound,view&#39;2_spec1,to_ref_seq&#39;0_spec">
-       <goal name="vc_produces_trans.0.0.0.0.0.0" proved="true">
-       <proof prover="0" timelimit="5"><result status="valid" time="0.174529" steps="1764000"/></proof>
-       </goal>
-      </transf>
-      </goal>
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.018901" steps="26"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1383,25 +1351,9 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__slice__qyi7128337469104663169__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <transf name="inline_goal" proved="true" >
-     <goal name="vc_produces_trans.0.0.0.0" proved="true">
-     <transf name="remove" proved="true" arg1="singleton">
-      <goal name="vc_produces_trans.0.0.0.0.0" proved="true">
-      <proof prover="0" timelimit="5"><result status="valid" time="0.304243" steps="1368414"/></proof>
-      </goal>
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.014655" steps="29"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1687,24 +1639,9 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__iter__once__qyi8116812009287608646__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <transf name="remove" proved="true" arg1="empty,singleton">
-     <goal name="vc_produces_trans.0.0.0.0" proved="true">
-     <proof prover="3" timelimit="5"><result status="valid" time="0.254019" steps="4998"/></proof>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="vc_produces_trans.0.0.1" proved="true">
-    <proof prover="2" timelimit="3" memlimit="2000"><result status="valid" time="0.666874" steps="101550"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.021916" steps="145"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1819,7 +1756,7 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__iter__zip__qyi2281060687216883844__produces_refl" proved="true">
  <goal name="vc_produces_refl" proved="true">
- <proof prover="1"><result status="valid" time="0.066903" steps="21462"/></proof>
+ <proof prover="1" timelimit="1"><result status="valid" time="0.066903" steps="21462"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__option__extern_spec_std_option_T_Option_T_unwrap_or_else_body" proved="true">
@@ -1921,20 +1858,9 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__option__qyi15354566128244900690__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <proof prover="3" timelimit="3" memlimit="2000"><result status="valid" time="0.284002" steps="5353"/></proof>
-    </goal>
-    <goal name="vc_produces_trans.0.0.1" proved="true">
-    <proof prover="2" timelimit="3" memlimit="2000"><result status="valid" time="0.550364" steps="100077"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.018484" steps="136"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1954,20 +1880,9 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__option__qyi15411423289202690388__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <proof prover="3" timelimit="3" memlimit="2000"><result status="valid" time="0.355188" steps="5447"/></proof>
-    </goal>
-    <goal name="vc_produces_trans.0.0.1" proved="true">
-    <proof prover="2" timelimit="3" memlimit="2000"><result status="valid" time="0.628514" steps="100077"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.020175" steps="136"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1987,20 +1902,9 @@
 </theory>
 <theory name="M_creusot_contracts__stdqy35z1__option__qyi6601631924869095363__produces_trans" proved="true">
  <goal name="vc_produces_trans" proved="true">
- <transf name="split_vc" proved="true" >
+ <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="vc_produces_trans.0" proved="true">
-  <transf name="inline_goal" proved="true" >
-   <goal name="vc_produces_trans.0.0" proved="true">
-   <transf name="split_all_full" proved="true" >
-    <goal name="vc_produces_trans.0.0.0" proved="true">
-    <proof prover="3" timelimit="3" memlimit="2000"><result status="valid" time="0.245002" steps="5408"/></proof>
-    </goal>
-    <goal name="vc_produces_trans.0.0.1" proved="true">
-    <proof prover="2" timelimit="3" memlimit="2000"><result status="valid" time="0.573703" steps="100094"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
+  <proof prover="3" timelimit="5"><result status="valid" time="0.018147" steps="136"/></proof>
   </goal>
  </transf>
  </goal>
