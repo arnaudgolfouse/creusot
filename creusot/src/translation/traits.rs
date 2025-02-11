@@ -11,9 +11,9 @@ use rustc_infer::{
     traits::{Obligation, ObligationCause, TraitEngine},
 };
 use rustc_middle::ty::{
-    AssocItemContainer, Const, ConstKind, EarlyBinder, GenericArgsRef, ParamConst, ParamEnv,
-    ParamTy, Predicate, TraitRef, Ty, TyCtxt, TyKind, TypeFoldable, TypeFolder, TypingEnv,
-    TypingMode,
+    AssocItemContainer, Const, ConstKind, EarlyBinder, GenericArgs, GenericArgsRef, ParamConst,
+    ParamEnv, ParamTy, Predicate, TraitRef, Ty, TyCtxt, TyKind, TypeFoldable, TypeFolder,
+    TypingEnv, TypingMode,
 };
 use rustc_span::{Span, Symbol, DUMMY_SP};
 use rustc_trait_selection::{
@@ -184,14 +184,13 @@ pub(crate) fn evaluate_additional_predicates<'tcx>(
         let predicate = infcx.tcx.erase_regions(predicate);
         let cause = ObligationCause::dummy_with_span(sp);
         let obligation = Obligation { cause, param_env, recursion_depth: 0, predicate };
-        // holds &= infcx.predicate_may_hold(&obligation);
-        fulfill_cx.register_predicate_obligation(&infcx, obligation);
+        fulfill_cx.register_predicate_obligation(infcx, obligation);
     }
-    let errors = fulfill_cx.select_all_or_error(&infcx);
+    let errors = fulfill_cx.select_all_or_error(infcx);
     if !errors.is_empty() {
-        return Err(errors);
+        Err(errors)
     } else {
-        return Ok(());
+        Ok(())
     }
 }
 
@@ -247,12 +246,11 @@ impl<'tcx> TraitResolved<'tcx> {
             tcx.codegen_select_candidate(typing_env.as_query_input(trait_ref))
         {
             source
+        } else if still_specializable(tcx, typing_env.param_env, trait_item_def_id, trait_ref, None)
+        {
+            return TraitResolved::UnknownNotFound;
         } else {
-            if still_specializable(tcx, typing_env.param_env, trait_item_def_id, trait_ref, None) {
-                return TraitResolved::UnknownNotFound;
-            } else {
-                return TraitResolved::NoInstance;
-            }
+            return TraitResolved::NoInstance;
         };
         trace!("TraitResolved::resolve {source:?}",);
 
@@ -299,7 +297,11 @@ impl<'tcx> TraitResolved<'tcx> {
                 rustc_middle::ty::Closure(closure_def_id, closure_substs) => {
                     TraitResolved::Instance(closure_def_id, closure_substs)
                 }
-                _ => unimplemented!(),
+                rustc_middle::ty::Dynamic(_, _, _) => TraitResolved::Instance(
+                    trait_item_def_id,
+                    GenericArgs::identity_for_item(tcx, trait_item_def_id),
+                ),
+                x => unimplemented!("{x:?}"),
             },
         }
     }

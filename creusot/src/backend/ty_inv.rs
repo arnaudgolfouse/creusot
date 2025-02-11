@@ -24,7 +24,7 @@ pub(crate) fn is_tyinv_trivial<'tcx>(
     let mut visited_tys = HashSet::new();
     let mut stack = vec![ty];
     while let Some(ty) = stack.pop() {
-        if !visited_tys.insert(ty.clone()) {
+        if !visited_tys.insert(ty) {
             continue;
         }
 
@@ -66,7 +66,9 @@ pub(crate) fn is_tyinv_trivial<'tcx>(
             | TyKind::FnDef(_, _)
             | TyKind::FnPtr(..)
             | TyKind::RawPtr(_, _) => (),
-            _ => unimplemented!("{ty:?}"),
+            // TODO: this should probably change if we want to support `dyn`
+            TyKind::Dynamic(_, _, _) => (),
+            _ => unimplemented!("{ty}"),
         }
     }
     true
