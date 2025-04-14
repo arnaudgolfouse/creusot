@@ -385,6 +385,7 @@ pub mod num_rational;
 pub mod fn_pure;
 pub mod ghost;
 pub mod invariant;
+pub mod local_invariant;
 pub mod logic;
 pub mod model;
 pub mod pcell;

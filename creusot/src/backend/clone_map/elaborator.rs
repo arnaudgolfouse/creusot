@@ -23,7 +23,7 @@ use crate::{
         get_builtin, get_fn_impl_postcond, get_fn_mut_impl_postcond, get_fn_once_impl_postcond,
         get_fn_once_impl_precond, get_resolve_method, is_fn_impl_postcond, is_fn_mut_impl_postcond,
         is_fn_mut_impl_unnest, is_fn_once_impl_postcond, is_fn_once_impl_precond, is_inv_function,
-        is_resolve_function, is_structural_resolve,
+        is_namespace_ty, is_resolve_function, is_structural_resolve,
     },
     ctx::{BodyId, ItemType},
     function::closure_resolve,
@@ -95,10 +95,6 @@ impl<'tcx> Namer<'tcx> for ExpansionProxy<'_, 'tcx> {
 }
 
 trait DepElab {
-    // type Sig;
-    // type Contract;
-    // type Body;
-
     fn expand<'tcx>(
         elab: &mut Expander<'_, 'tcx>,
         ctx: &Why3Generator<'tcx>,
@@ -234,6 +230,7 @@ struct TyElab;
 use rustc_middle::ty::AliasTyKind;
 
 impl DepElab for TyElab {
+    /// Get all the why3 declarations needed for the _type_ `dep`.
     fn expand<'tcx>(
         elab: &mut Expander<'_, 'tcx>,
         ctx: &Why3Generator<'tcx>,
@@ -269,6 +266,11 @@ impl DepElab for TyElab {
                 } else {
                     vec![]
                 }
+            }
+            // Special treatment for the `Namespace` type: we must generate it after collecting all the possible variants.
+            TyKind::Adt(adt_def, _) if is_namespace_ty(ctx.tcx, adt_def.did()) => {
+                ctx.used_namespaces.set(true);
+                Vec::new()
             }
             TyKind::Adt(_, _) => {
                 let (def_id, subst) = dep.did().unwrap();
@@ -335,6 +337,7 @@ impl<'a, 'tcx> Expander<'a, 'tcx> {
         (self.graph, self.dep_bodies)
     }
 
+    /// Visit the dependencies of `dep`.
     fn expand(&mut self, ctx: &Why3Generator<'tcx>, dep: Dependency<'tcx>) {
         expand_laws(self, ctx, dep);
 

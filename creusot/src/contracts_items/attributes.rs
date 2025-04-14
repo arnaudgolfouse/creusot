@@ -51,6 +51,7 @@ attribute_functions! {
     [creusot::decl::predicate]               => is_predicate
     [creusot::decl::trusted]                 => is_trusted
     [creusot::decl::law]                     => is_law
+    [creusot::decl::new_namespace]           => is_new_namespace
     not [creusot::decl::no_trigger]          => should_replace_trigger
     [creusot::decl::open_inv_result]         => is_open_inv_result
     [creusot::extern_spec]                   => is_extern_spec
@@ -60,9 +61,14 @@ attribute_functions! {
     [creusot::bitwise]                       => is_bitwise
 }
 
-pub fn get_invariant_expl(tcx: TyCtxt, def_id: DefId) -> Option<String> {
+pub(crate) fn get_invariant_expl(tcx: TyCtxt, def_id: DefId) -> Option<String> {
     get_attr(tcx, tcx.get_attrs_unchecked(def_id), &["creusot", "spec", "invariant"])
         .map(|a| a.value_str().map_or("expl:loop invariant".to_string(), |s| s.to_string()))
+}
+
+/// Returns `true` if `def_id` is a logical function
+pub(crate) fn is_logic_item(tcx: TyCtxt, def_id: DefId) -> bool {
+    is_logic(tcx, def_id) || is_predicate(tcx, def_id)
 }
 
 pub(crate) fn is_pearlite(tcx: TyCtxt, def_id: DefId) -> bool {
@@ -119,7 +125,7 @@ pub(crate) fn get_creusot_item(tcx: TyCtxt, def_id: DefId) -> Option<Symbol> {
     )
 }
 
-pub(crate) fn is_open_inv_param<'tcx>(tcx: TyCtxt<'tcx>, p: &Param) -> bool {
+pub(crate) fn is_open_inv_param(tcx: TyCtxt, p: &Param) -> bool {
     let mut found = false;
     for a in &p.attrs {
         if a.is_doc_comment() {
@@ -147,7 +153,7 @@ pub(crate) fn is_open_inv_param<'tcx>(tcx: TyCtxt<'tcx>, p: &Param) -> bool {
         }
     }
 
-    return found;
+    found
 }
 
 fn get_attrs<'a>(attrs: &'a [Attribute], path: &[&str]) -> Vec<&'a Attribute> {
@@ -173,15 +179,11 @@ fn get_attrs<'a>(attrs: &'a [Attribute], path: &[&str]) -> Vec<&'a Attribute> {
     matched
 }
 
-fn get_attr<'a, 'tcx>(
-    tcx: TyCtxt<'tcx>,
-    attrs: &'a [Attribute],
-    path: &[&str],
-) -> Option<&'a Attribute> {
+fn get_attr<'a>(tcx: TyCtxt, attrs: &'a [Attribute], path: &[&str]) -> Option<&'a Attribute> {
     let matched = get_attrs(attrs, path);
     match matched.len() {
-        0 => return None,
-        1 => return Some(matched[0]),
+        0 => None,
+        1 => Some(matched[0]),
         _ => tcx.dcx().span_fatal(matched[0].span, "Unexpected duplicate attribute.".to_string()),
     }
 }

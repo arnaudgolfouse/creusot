@@ -27,6 +27,10 @@ pub fn ghost(body: TS1) -> TS1 {
     .into()
 }
 
+pub fn declare_namespace(_: TS1) -> TS1 {
+    TS1::new()
+}
+
 // #[proc_macro_attribute]
 
 pub fn requires(_: TS1, tokens: TS1) -> TS1 {

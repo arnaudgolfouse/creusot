@@ -14,6 +14,7 @@ use crate::{
         },
         wto::{Component, weak_topological_order},
     },
+    contracts_items::get_namespace_ty,
     ctx::{BodyId, Dependencies},
     fmir::{Body, BorrowKind, Operand, TrivialInv},
     naming::name,
@@ -55,6 +56,9 @@ pub(crate) fn translate_function(ctx: &Why3Generator, def_id: DefId) -> Option<F
     let name = names.item_ident(names.self_id, names.self_subst);
     let body = Decl::Coma(to_why(ctx, &names, name, BodyId::new(def_id.expect_local(), None)));
 
+    let namespace_ty =
+        names.def_ty_no_dependency(get_namespace_ty(ctx.ctx.tcx), GenericArgsRef::default());
+
     let mut decls = names.provide_deps(ctx);
     decls.push(Decl::Meta(Meta {
         name: MetaIdent::String("compute_max_steps".into()),
@@ -66,6 +70,13 @@ pub(crate) fn translate_function(ctx: &Why3Generator, def_id: DefId) -> Option<F
     let meta = ctx.display_impl_of(def_id);
     let path = ctx.module_path(def_id);
     let name = path.why3_ident();
+
+    if ctx.used_namespaces.get() {
+        let mut new_decls = ctx.generate_namespace_type(namespace_ty);
+        new_decls.extend(std::mem::take(&mut decls));
+        decls = new_decls;
+    }
+
     Some(FileModule { path, modl: Module { name, decls: decls.into(), attrs, meta } })
 }
 
@@ -132,7 +143,7 @@ pub(crate) fn to_why<'tcx, N: Namer<'tcx>>(
     let block_idents: IndexMap<BasicBlock, Ident> = body
         .blocks
         .iter()
-        .map(|(blk, _)| (*blk, Ident::fresh_local(&format!("bb{}", blk.as_usize()))))
+        .map(|(blk, _)| (*blk, Ident::fresh_local(format!("bb{}", blk.as_usize()))))
         .collect();
 
     // Remember the index of every argument before removing unused variables in simplify_fmir
@@ -280,7 +291,7 @@ fn component_to_defn<'tcx, N: Namer<'tcx>>(
     block.body = Expr::Defn(
         Expr::var(block.prototype.name).boxed(),
         true,
-        [Defn::simple(block.prototype.name.clone(), inner)].into(),
+        [Defn::simple(block.prototype.name, inner)].into(),
     );
     block
 }
@@ -314,7 +325,7 @@ impl<'tcx> Operand<'tcx> {
             Operand::Move(pl) | Operand::Copy(pl) => rplace_to_expr(lower, &pl, istmts),
             Operand::Constant(c) => lower_pure(lower.ctx, lower.names, &c),
             Operand::Promoted(pid, ty) => {
-                let var = Ident::fresh_local(&format!("pr{}", pid.as_usize()));
+                let var = Ident::fresh_local(format!("pr{}", pid.as_usize()));
                 istmts.push(IntermediateStmt::call(
                     var,
                     lower.ty(ty),
@@ -532,7 +543,7 @@ impl<'tcx> RValue<'tcx> {
                         // create final statement
                         let of_ret_id = Ident::fresh_local("_ret_from");
                         istmts.push(IntermediateStmt::call(
-                            of_ret_id.clone(),
+                            of_ret_id,
                             lower.ty(ty),
                             Name::Global(of_fname),
                             [Arg::Term(to_exp)],
@@ -850,7 +861,7 @@ fn mk_switch_branches(
 ) -> impl Iterator<Item = Defn> {
     brch.into_iter().enumerate().map(move |(ix, (cond, tgt))| {
         let filter = Expr::assert(discr.clone().eq(cond), tgt.black_box());
-        Defn::simple(Ident::fresh_local(&format!("br{ix}")), filter)
+        Defn::simple(Ident::fresh_local(format!("br{ix}")), filter)
     })
 }
 
@@ -869,7 +880,7 @@ impl<'tcx> Block<'tcx> {
         for (ix, s) in self.stmts.into_iter().enumerate() {
             let stmt = s.to_why(lower);
             let old_cont = cont;
-            cont = Ident::fresh_local(&format!("s{}", ix + 1));
+            cont = Ident::fresh_local(format!("s{}", ix + 1));
             let body = assemble_intermediates(stmt.into_iter(), Expr::var(cont));
             statements.push(Defn::simple(old_cont, body));
         }

@@ -15685,7 +15685,96 @@ module M_creusot_contracts__ghost__qyi5572048714256451829__into_inner [#"../../c
       (! return' {result}) ]
 
 end
+module M_creusot_contracts__local_invariant__qyi15885963704852686872__new [#"../../creusot-contracts/src/local_invariant.rs" 28 4 28 24] (* local_invariant::Namespace *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
+  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 26 15 26 20
+  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 29 8 29 16
+  
+  function new [#"../../creusot-contracts/src/local_invariant.rs" 28 4 28 24]  : t_Namespace
+  
+  goal vc_new : true
+end
+module M_creusot_contracts__local_invariant__qyi11065178617703918540__new [#"../../creusot-contracts/src/local_invariant.rs" 43 4 43 64] (* local_invariant::LocalInvariant<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
+  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 45 30 45 46
+  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 43 15 43 20
+  let%span slocal_invariant'1 = "../../creusot-contracts/src/local_invariant.rs" 43 60 43 64
+  let%span slocal_invariant'2 = "../../creusot-contracts/src/local_invariant.rs" 41 14 41 36
+  let%span slocal_invariant'3 = "../../creusot-contracts/src/local_invariant.rs" 42 14 42 46
+  let%span slocal_invariant'4 = "../../creusot-contracts/src/local_invariant.rs" 56 4 56 12
+  let%span slocal_invariant'5 = "../../creusot-contracts/src/local_invariant.rs" 49 4 49 12
+  
+  use creusot.prelude.Any
+  
+  type t_T
+  
+  type t_LocalInvariant  =
+    { t_LocalInvariant__value: t_T; t_LocalInvariant__initial_value: t_T; t_LocalInvariant__namespace: t_Namespace }
+  
+  predicate invariant' [#"../../creusot-contracts/src/invariant.rs" 6 4 6 31] (self : t_T)
+  
+  predicate inv [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_T)
+  
+  axiom inv_axiom : forall x : t_T [inv x] . inv x  -> invariant' x
+  
+  predicate inv'0 [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_LocalInvariant)
+  
+  axiom inv_axiom'0 [@rewrite] : forall x : t_LocalInvariant [inv'0 x] . inv'0 x
+  = match x with
+    | {t_LocalInvariant__value = value ; t_LocalInvariant__initial_value = initial_value ; t_LocalInvariant__namespace = namespace} -> inv value
+    end
+  
+  function init [#"../../creusot-contracts/src/local_invariant.rs" 58 4 58 26] (self : t_LocalInvariant) : t_T =
+    [%#slocal_invariant'4] self.t_LocalInvariant__initial_value
+  
+  function namespace [#"../../creusot-contracts/src/local_invariant.rs" 51 4 51 39] (self : t_LocalInvariant) : t_Namespace
+  
+   =
+    [%#slocal_invariant'5] self.t_LocalInvariant__namespace
+  
+  meta "compute_max_steps" 1000000
+  
+  let rec new[#"../../creusot-contracts/src/local_invariant.rs" 43 4 43 64] (value:t_T) (namespace'0:t_Namespace) (return'  (x:t_LocalInvariant))= {[@expl:new 'value' type invariant] [%#slocal_invariant'0] inv value}
+    (! bb0
+    [ bb0 = bb1
+    | bb1 = s0 [ s0 =  [ &_5 <- [%#slocal_invariant] value'0 ] s1 | s1 = bb2 ] 
+    | bb2 = s0
+      [ s0 = 
+        [ &_0 <- { t_LocalInvariant__value = value'0;
+                   t_LocalInvariant__initial_value = _5;
+                   t_LocalInvariant__namespace = namespace'1 } ]
+        
+        s1
+      | s1 = bb3 ]
+    
+    | bb3 = bb4
+    | bb4 = return''0 {_0} ]
+    )
+    [ & _0 : t_LocalInvariant = Any.any_l ()
+    | & value'0 : t_T = value
+    | & namespace'1 : t_Namespace = namespace'0
+    | & _5 : t_T = Any.any_l () ]
+    
+    [ return''0 (result:t_LocalInvariant)-> {[@expl:new result type invariant] [%#slocal_invariant'1] inv'0 result}
+      {[@expl:new ensures #0] [%#slocal_invariant'2] init result = value}
+      {[@expl:new ensures #1] [%#slocal_invariant'3] namespace result = namespace'0}
+      (! return' {result}) ]
+
+end
 module M_creusot_contracts__logic__fmap__qyi17941324210461407630__subtract [#"../../creusot-contracts/src/logic/fmap.rs" 204 4 204 46] (* logic::fmap::FMap<K, V> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfmap = "../../creusot-contracts/src/logic/fmap.rs" 196 15 196 33
   let%span sfmap'0 = "../../creusot-contracts/src/logic/fmap.rs" 197 14 197 36
   let%span sfmap'1 = "../../creusot-contracts/src/logic/fmap.rs" 198 14 198 46
@@ -15778,6 +15867,11 @@ module M_creusot_contracts__logic__fmap__qyi17941324210461407630__subtract [#"..
   && ([%#sfmap'2] forall k : t_K . get_unsized result k = (if contains other k then C_None else get_unsized self k)))
 end
 module M_creusot_contracts__logic__fmap__qyi17941324210461407630__ext_eq [#"../../creusot-contracts/src/logic/fmap.rs" 217 4 217 44] (* logic::fmap::FMap<K, V> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfmap = "../../creusot-contracts/src/logic/fmap.rs" 215 14 215 38
   let%span sfmap'0 = "../../creusot-contracts/src/logic/fmap.rs" 216 14 216 83
   let%span sfmap'1 = "../../creusot-contracts/src/logic/fmap.rs" 59 14 59 86
@@ -15818,6 +15912,11 @@ module M_creusot_contracts__logic__fmap__qyi17941324210461407630__ext_eq [#"../.
   && ([%#sfmap'0] (forall k : t_K . get_unsized self k = get_unsized other k)  -> result))
 end
 module M_creusot_contracts__logic__fmap__qyi17941324210461407630__contains_ghost [#"../../creusot-contracts/src/logic/fmap.rs" 286 4 286 49] (* logic::fmap::FMap<K, V> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfmap = "../../creusot-contracts/src/logic/fmap.rs" 286 27 286 31
   let%span sfmap'0 = "../../creusot-contracts/src/logic/fmap.rs" 286 33 286 36
   let%span sfmap'1 = "../../creusot-contracts/src/logic/fmap.rs" 285 14 285 43
@@ -15963,6 +16062,11 @@ module M_creusot_contracts__logic__fmap__qyi17941324210461407630__contains_ghost
 
 end
 module M_creusot_contracts__logic__fset__qyi15838233236912513155__ext_eq [#"../../creusot-contracts/src/logic/fset.rs" 198 4 200 17] (* logic::fset::FSet<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 197 14 197 38
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 203 12 203 63
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 47 8 47 26
@@ -15986,6 +16090,11 @@ module M_creusot_contracts__logic__fset__qyi15838233236912513155__ext_eq [#"../.
   goal vc_ext_eq : [%#sfset] ([%#sfset'0] forall e : t_T . contains self e = contains other e)  -> self = other
 end
 module M_creusot_contracts__logic__fset__qyi15838233236912513155__singleton [#"../../creusot-contracts/src/logic/fset.rs" 213 4 213 34] (* logic::fset::FSet<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 212 14 212 57
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 214 8 214 29
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 47 8 47 26
@@ -16012,6 +16121,11 @@ module M_creusot_contracts__logic__fset__qyi15838233236912513155__singleton [#".
   goal vc_singleton : [%#sfset] forall y : t_T . contains (insert (Fset.empty : Fset.fset t_T) x) y = (x = y)
 end
 module M_creusot_contracts__logic__fset__qyi15838233236912513155__unions [#"../../creusot-contracts/src/logic/fset.rs" 222 4 222 61] (* logic::fset::FSet<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 220 14 220 102
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 221 14 221 24
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 223 8 228 9
@@ -16061,6 +16175,11 @@ module M_creusot_contracts__logic__fset__qyi15838233236912513155__unions [#"../.
 
 end
 module M_creusot_contracts__logic__fset__qyi15838233236912513155__replicate [#"../../creusot-contracts/src/logic/fset.rs" 279 4 279 50] (* logic::fset::FSet<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 362 20 362 77
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 276 15 276 21
@@ -16144,6 +16263,11 @@ module M_creusot_contracts__logic__fset__qyi15838233236912513155__replicate [#".
   )
 end
 module M_creusot_contracts__logic__fset__qyi15838233236912513155__replicate_up_to [#"../../creusot-contracts/src/logic/fset.rs" 297 4 297 56] (* logic::fset::FSet<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 362 20 362 77
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 294 15 294 21
@@ -16245,6 +16369,11 @@ module M_creusot_contracts__logic__fset__qyi15838233236912513155__replicate_up_t
   )
 end
 module M_creusot_contracts__logic__fset__unions_union [#"../../creusot-contracts/src/logic/fset.rs" 480 0 480 27]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 477 10 477 125
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 478 10 479 76
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 480 28 480 30
@@ -16297,6 +16426,11 @@ module M_creusot_contracts__logic__fset__unions_union [#"../../creusot-contracts
   = Fset.union (unions s f) (unions s g))
 end
 module M_creusot_contracts__logic__fset__map_union [#"../../creusot-contracts/src/logic/fset.rs" 486 0 486 24]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 485 10 485 104
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 486 25 486 27
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 243 8 243 27
@@ -16319,6 +16453,11 @@ module M_creusot_contracts__logic__fset__map_union [#"../../creusot-contracts/sr
   = Fset.union (map s f) (map t f)
 end
 module M_creusot_contracts__logic__fset__concat_union [#"../../creusot-contracts/src/logic/fset.rs" 495 0 495 24]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 491 10 492 83
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 493 10 494 83
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 495 25 495 27
@@ -16349,6 +16488,11 @@ module M_creusot_contracts__logic__fset__concat_union [#"../../creusot-contracts
   = Fset.union (concat s t1) (concat s t2))
 end
 module M_creusot_contracts__logic__fset__cons_concat [#"../../creusot-contracts/src/logic/fset.rs" 501 0 501 23]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 247 8 247 27
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 500 10 500 133
@@ -16407,6 +16551,11 @@ module M_creusot_contracts__logic__fset__cons_concat [#"../../creusot-contracts/
   = cons s (concat t u))))
 end
 module M_creusot_contracts__logic__fset__concat_replicate [#"../../creusot-contracts/src/logic/fset.rs" 513 0 513 54]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 362 20 362 77
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 510 11 510 27
@@ -16533,6 +16682,11 @@ module M_creusot_contracts__logic__fset__concat_replicate [#"../../creusot-contr
   )
 end
 module M_creusot_contracts__logic__fset__concat_empty [#"../../creusot-contracts/src/logic/fset.rs" 529 0 529 39]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 527 10 527 59
   let%span sfset'0 = "../../creusot-contracts/src/logic/fset.rs" 528 10 528 59
   let%span sfset'1 = "../../creusot-contracts/src/logic/fset.rs" 530 20 530 66
@@ -16583,6 +16737,11 @@ module M_creusot_contracts__logic__fset__concat_empty [#"../../creusot-contracts
   && ([%#sfset'0] concat s (singleton (Seq.empty : Seq.seq t_T)) = s)))
 end
 module M_creusot_contracts__logic__fset__concat_replicate_up_to [#"../../creusot-contracts/src/logic/fset.rs" 541 0 541 60]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 362 20 362 77
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
   let%span sfset = "../../creusot-contracts/src/logic/fset.rs" 537 11 537 26
@@ -16763,6 +16922,11 @@ module M_creusot_contracts__logic__fset__concat_replicate_up_to [#"../../creusot
   )
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16786,6 +16950,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] (x <= y) = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16809,6 +16978,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] (x < y) = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16832,6 +17006,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] (x >= y) = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16855,6 +17034,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] (x > y) = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16876,6 +17060,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -16906,6 +17095,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -16930,6 +17124,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -16954,6 +17153,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8355372356285216375__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <logic::int::Int as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 184 8 190 9
@@ -16977,6 +17181,11 @@ module M_creusot_contracts__logic__ord__qyi8355372356285216375__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17002,6 +17211,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] UInt8.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17027,6 +17241,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] UInt8.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17052,6 +17271,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] UInt8.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17077,6 +17301,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] UInt8.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17100,6 +17329,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -17132,6 +17366,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -17158,6 +17397,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -17184,6 +17428,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi15418235539824427604__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <u8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17209,6 +17458,11 @@ module M_creusot_contracts__logic__ord__qyi15418235539824427604__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17234,6 +17488,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] UInt16.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17259,6 +17518,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] UInt16.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17284,6 +17548,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] UInt16.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17309,6 +17578,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] UInt16.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17332,6 +17606,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -17364,6 +17643,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -17390,6 +17674,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -17416,6 +17705,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi7305497527599188430__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <u16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17441,6 +17735,11 @@ module M_creusot_contracts__logic__ord__qyi7305497527599188430__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17466,6 +17765,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] UInt32.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17491,6 +17795,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] UInt32.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17516,6 +17825,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] UInt32.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17541,6 +17855,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] UInt32.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17564,6 +17883,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -17596,6 +17920,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -17622,6 +17951,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -17648,6 +17982,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4526525114627399862__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <u32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17673,6 +18012,11 @@ module M_creusot_contracts__logic__ord__qyi4526525114627399862__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17698,6 +18042,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] UInt64.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17723,6 +18072,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] UInt64.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17748,6 +18102,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] UInt64.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17773,6 +18132,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] UInt64.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17796,6 +18160,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -17828,6 +18197,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -17854,6 +18228,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -17880,6 +18259,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi11489483489418918928__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <u64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17905,6 +18289,11 @@ module M_creusot_contracts__logic__ord__qyi11489483489418918928__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17931,6 +18320,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] UInt128.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17957,6 +18351,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] UInt128.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -17983,6 +18382,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] UInt128.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18009,6 +18413,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] UInt128.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18032,6 +18441,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -18064,6 +18478,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -18090,6 +18509,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -18116,6 +18540,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi13757098721041279861__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <u128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18141,6 +18570,11 @@ module M_creusot_contracts__logic__ord__qyi13757098721041279861__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18166,6 +18600,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] UInt64.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18191,6 +18630,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] UInt64.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18216,6 +18660,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] UInt64.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18241,6 +18690,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] UInt64.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18264,6 +18718,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -18296,6 +18755,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -18322,6 +18786,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -18348,6 +18817,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8186105652185060096__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <usize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18373,6 +18847,11 @@ module M_creusot_contracts__logic__ord__qyi8186105652185060096__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18397,6 +18876,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] Int8.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18421,6 +18905,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] Int8.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18445,6 +18934,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] Int8.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18469,6 +18963,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] Int8.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18491,6 +18990,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -18522,6 +19026,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -18547,6 +19056,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -18572,6 +19086,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi18413678402769648790__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <i8 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18596,6 +19115,11 @@ module M_creusot_contracts__logic__ord__qyi18413678402769648790__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18621,6 +19145,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] Int16.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18646,6 +19175,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] Int16.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18671,6 +19205,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] Int16.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18696,6 +19235,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] Int16.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18719,6 +19263,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -18751,6 +19300,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -18777,6 +19331,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -18803,6 +19362,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8040194823849327911__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <i16 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18828,6 +19392,11 @@ module M_creusot_contracts__logic__ord__qyi8040194823849327911__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18853,6 +19422,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_le_log [#"../
   goal vc_cmp_le_log : [%#sord] Int32.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18878,6 +19452,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_lt_log [#"../
   goal vc_cmp_lt_log : [%#sord] Int32.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18903,6 +19482,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_ge_log [#"../
   goal vc_cmp_ge_log : [%#sord] Int32.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18928,6 +19512,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__cmp_gt_log [#"../
   goal vc_cmp_gt_log : [%#sord] Int32.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -18951,6 +19540,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__refl [#"../../cre
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -18983,6 +19577,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__trans [#"../../cr
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -19009,6 +19608,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__antisym1 [#"../..
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -19035,6 +19639,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__antisym2 [#"../..
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi211457485035727011__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <i32 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19060,6 +19669,11 @@ module M_creusot_contracts__logic__ord__qyi211457485035727011__eq_cmp [#"../../c
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19085,6 +19699,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] Int64.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19110,6 +19729,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] Int64.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19135,6 +19759,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] Int64.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19160,6 +19789,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] Int64.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19183,6 +19817,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -19215,6 +19854,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -19241,6 +19885,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -19267,6 +19916,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2565746305859701215__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <i64 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19292,6 +19946,11 @@ module M_creusot_contracts__logic__ord__qyi2565746305859701215__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19317,6 +19976,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] Int128.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19342,6 +20006,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] Int128.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19367,6 +20036,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] Int128.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19392,6 +20066,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] Int128.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19415,6 +20094,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -19447,6 +20131,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -19473,6 +20162,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -19499,6 +20193,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi2364657485180829964__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <i128 as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19524,6 +20223,11 @@ module M_creusot_contracts__logic__ord__qyi2364657485180829964__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19549,6 +20253,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] Int64.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19574,6 +20283,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] Int64.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19599,6 +20313,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] Int64.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19624,6 +20343,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] Int64.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19647,6 +20371,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -19679,6 +20408,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -19705,6 +20439,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -19731,6 +20470,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi8047313880300482848__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <isize as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19756,6 +20500,11 @@ module M_creusot_contracts__logic__ord__qyi8047313880300482848__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19780,6 +20529,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] Char.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19804,6 +20558,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] Char.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19828,6 +20587,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] Char.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19852,6 +20616,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] Char.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19874,6 +20643,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -19905,6 +20679,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -19930,6 +20709,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -19955,6 +20739,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi10449924602577541611__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <char as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -19979,6 +20768,11 @@ module M_creusot_contracts__logic__ord__qyi10449924602577541611__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20002,6 +20796,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_le_log [#".
   goal vc_cmp_le_log : [%#sord] Bool.le x y = (cmp_log x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20025,6 +20824,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_lt_log [#".
   goal vc_cmp_lt_log : [%#sord] Bool.lt x y = (cmp_log x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20048,6 +20852,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_ge_log [#".
   goal vc_cmp_ge_log : [%#sord] Bool.ge x y = (cmp_log x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20071,6 +20880,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__cmp_gt_log [#".
   goal vc_cmp_gt_log : [%#sord] Bool.gt x y = (cmp_log x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20092,6 +20906,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__refl [#"../../c
   goal vc_refl : [%#sord] cmp_log x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -20122,6 +20941,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__trans [#"../../
   goal vc_trans : ([%#sord] cmp_log x y = o)  -> ([%#sord'0] cmp_log y z = o)  -> ([%#sord'1] cmp_log x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -20146,6 +20970,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__antisym1 [#"../
   goal vc_antisym1 : ([%#sord] cmp_log x y = C_Less)  -> ([%#sord'0] cmp_log y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -20170,6 +20999,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__antisym2 [#"../
   goal vc_antisym2 : ([%#sord] cmp_log x y = C_Greater)  -> ([%#sord'0] cmp_log y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi17836724837647357586__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <bool as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 230 16 236 17
@@ -20193,6 +21027,11 @@ module M_creusot_contracts__logic__ord__qyi17836724837647357586__eq_cmp [#"../..
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log x y = C_Equal)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_le_log [#"../../creusot-contracts/src/logic/ord.rs" 130 8 130 39] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 129 39 129 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 130 40 130 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 320 20 320 68
@@ -20339,6 +21178,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_le_log [#"..
   goal vc_cmp_le_log : [%#sord] le_log'1 x y = (cmp_log'1 x y <> C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_lt_log [#"../../creusot-contracts/src/logic/ord.rs" 135 8 135 39] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 134 39 134 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 135 40 135 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 326 20 326 67
@@ -20485,6 +21329,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_lt_log [#"..
   goal vc_cmp_lt_log : [%#sord] lt_log'1 x y = (cmp_log'1 x y = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_ge_log [#"../../creusot-contracts/src/logic/ord.rs" 140 8 140 39] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 139 39 139 86
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 140 40 140 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 332 20 332 68
@@ -20631,6 +21480,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_ge_log [#"..
   goal vc_cmp_ge_log : [%#sord] ge_log'1 x y = (cmp_log'1 x y <> C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_gt_log [#"../../creusot-contracts/src/logic/ord.rs" 145 8 145 39] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 144 39 144 89
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 145 40 145 42
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 338 20 338 67
@@ -20777,6 +21631,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__cmp_gt_log [#"..
   goal vc_cmp_gt_log : [%#sord] gt_log'1 x y = (cmp_log'1 x y = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__refl [#"../../creusot-contracts/src/logic/ord.rs" 150 8 150 24] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 149 39 149 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 150 25 150 27
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 308 12 308 40
@@ -20917,6 +21776,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__refl [#"../../cr
   goal vc_refl : [%#sord] cmp_log'1 x x = C_Equal
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__trans [#"../../creusot-contracts/src/logic/ord.rs" 157 8 157 56] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 154 40 154 57
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 155 40 155 57
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 156 39 156 56
@@ -21066,6 +21930,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__trans [#"../../c
   goal vc_trans : ([%#sord] cmp_log'1 x y = o)  -> ([%#sord'0] cmp_log'1 y z = o)  -> ([%#sord'1] cmp_log'1 x z = o)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__antisym1 [#"../../creusot-contracts/src/logic/ord.rs" 163 8 163 37] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 161 40 161 70
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 162 39 162 72
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 163 38 163 40
@@ -21209,6 +22078,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__antisym1 [#"../.
   goal vc_antisym1 : ([%#sord] cmp_log'1 x y = C_Less)  -> ([%#sord'0] cmp_log'1 y x = C_Greater)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__antisym2 [#"../../creusot-contracts/src/logic/ord.rs" 169 8 169 37] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 167 40 167 73
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 168 39 168 69
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 169 38 169 40
@@ -21352,6 +22226,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__antisym2 [#"../.
   goal vc_antisym2 : ([%#sord] cmp_log'1 x y = C_Greater)  -> ([%#sord'0] cmp_log'1 y x = C_Less)
 end
 module M_creusot_contracts__logic__ord__qyi4707453745515736021__eq_cmp [#"../../creusot-contracts/src/logic/ord.rs" 174 8 174 35] (* <(A, B) as logic::ord::OrdLogic> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sord = "../../creusot-contracts/src/logic/ord.rs" 173 39 173 84
   let%span sord'0 = "../../creusot-contracts/src/logic/ord.rs" 174 36 174 38
   let%span sord'1 = "../../creusot-contracts/src/logic/ord.rs" 308 12 308 40
@@ -21494,6 +22373,11 @@ module M_creusot_contracts__logic__ord__qyi4707453745515736021__eq_cmp [#"../../
   goal vc_eq_cmp : [%#sord] (x = y) = (cmp_log'1 x y = C_Equal)
 end
 module M_creusot_contracts__logic__seq__qyi14265726700160510826__flat_map [#"../../creusot-contracts/src/logic/seq.rs" 292 4 292 73] (* logic::seq::Seq<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 291 14 291 24
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 293 8 297 9
   let%span sseq'1 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
@@ -21523,6 +22407,11 @@ module M_creusot_contracts__logic__seq__qyi14265726700160510826__flat_map [#"../
 
 end
 module M_creusot_contracts__logic__seq__qyi14265726700160510826__concat_contains [#"../../creusot-contracts/src/logic/seq.rs" 391 4 393 17] (* logic::seq::Seq<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 389 14 390 65
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 394 4 395 5
   let%span sseq'1 = "../../creusot-contracts/src/logic/seq.rs" 362 20 362 77
@@ -21542,6 +22431,11 @@ module M_creusot_contracts__logic__seq__qyi14265726700160510826__concat_contains
   \/ contains b x
 end
 module M_creusot_contracts__logic__seq__qyi16115490154402163220__flatten [#"../../creusot-contracts/src/logic/seq.rs" 402 4 402 34] (* logic::seq::Seq<logic::seq::Seq<T>> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 401 14 401 24
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 403 8 407 9
   let%span sseq'1 = "../../creusot-contracts/src/logic/seq.rs" 169 8 169 39
@@ -21568,6 +22462,11 @@ module M_creusot_contracts__logic__seq__qyi16115490154402163220__flatten [#"../.
 
 end
 module M_creusot_contracts__logic__seq__flat_map_singleton [#"../../creusot-contracts/src/logic/seq.rs" 659 0 659 33]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 658 10 658 87
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 659 34 659 36
   let%span sseq'1 = "../../creusot-contracts/src/logic/seq.rs" 291 14 291 24
@@ -21600,6 +22499,11 @@ module M_creusot_contracts__logic__seq__flat_map_singleton [#"../../creusot-cont
   = Map.get f x
 end
 module M_creusot_contracts__logic__seq__flat_map_push_back [#"../../creusot-contracts/src/logic/seq.rs" 665 0 665 43]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sseq = "../../creusot-contracts/src/logic/seq.rs" 663 10 663 108
   let%span sseq'0 = "../../creusot-contracts/src/logic/seq.rs" 664 10 664 18
   let%span sseq'1 = "../../creusot-contracts/src/logic/seq.rs" 668 24 668 85
@@ -21647,6 +22551,11 @@ module M_creusot_contracts__logic__seq__flat_map_push_back [#"../../creusot-cont
 
 end
 module M_creusot_contracts__pcell__qyi11656593191764906533__clone [#"../../creusot-contracts/src/pcell.rs" 34 4 34 27] (* <pcell::Id as std::clone::Clone> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span spcell = "../../creusot-contracts/src/pcell.rs" 33 14 33 29
   
   use creusot.prelude.Any
@@ -21662,6 +22571,11 @@ module M_creusot_contracts__pcell__qyi11656593191764906533__clone [#"../../creus
 
 end
 module M_creusot_contracts__pcell__qyi14846468513926953542__take [#"../../creusot-contracts/src/pcell.rs" 263 4 263 65] (* pcell::PCell<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sinvariant = "../../creusot-contracts/src/invariant.rs" 25 8 25 18
   let%span sinvariant'0 = "../../creusot-contracts/src/invariant.rs" 35 20 35 44
   let%span sdefault = "../../creusot-contracts/src/std/default.rs" 31 26 31 45
@@ -21805,6 +22719,11 @@ module M_creusot_contracts__pcell__qyi14846468513926953542__take [#"../../creuso
 
 end
 module M_creusot_contracts__peano__qyi18263836234684628832__clone [#"../../creusot-contracts/src/peano.rs" 35 9 35 14] (* <peano::PeanoInt as std::clone::Clone> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sclone = "../../creusot-contracts/src/std/clone.rs" 15 26 15 41
   let%span speano = "../../creusot-contracts/src/peano.rs" 35 9 35 14
   
@@ -21835,6 +22754,11 @@ module M_creusot_contracts__peano__qyi18263836234684628832__clone [#"../../creus
      [ return''0 (result:t_PeanoInt)-> {[@expl:clone ensures] [%#speano] result = self} (! return' {result}) ] 
 end
 module M_creusot_contracts__peano__qyi17635635094782400840__default [#"../../creusot-contracts/src/peano.rs" 35 22 35 29] (* <peano::PeanoInt as std::default::Default> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sdefault = "../../creusot-contracts/src/std/default.rs" 31 26 31 45
   let%span speano = "../../creusot-contracts/src/peano.rs" 35 22 35 29
   let%span snum = "../../creusot-contracts/src/std/num.rs" 33 28 33 41
@@ -21865,6 +22789,11 @@ module M_creusot_contracts__peano__qyi17635635094782400840__default [#"../../cre
 
 end
 module M_creusot_contracts__peano__qyi4712407557780062981__new [#"../../creusot-contracts/src/peano.rs" 51 4 51 24] (* peano::PeanoInt *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 52 13 52 14
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 50 14 50 26
   let%span speano'1 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
@@ -21887,6 +22816,11 @@ module M_creusot_contracts__peano__qyi4712407557780062981__new [#"../../creusot-
 
 end
 module M_creusot_contracts__peano__qyi4712407557780062981__to_u64 [#"../../creusot-contracts/src/peano.rs" 81 4 81 30] (* peano::PeanoInt *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 80 14 80 30
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
   
@@ -21909,6 +22843,11 @@ module M_creusot_contracts__peano__qyi4712407557780062981__to_u64 [#"../../creus
 
 end
 module M_creusot_contracts__peano__qyi4712407557780062981__to_u128 [#"../../creusot-contracts/src/peano.rs" 96 4 96 32] (* peano::PeanoInt *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 95 14 95 30
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
   
@@ -21935,6 +22874,11 @@ module M_creusot_contracts__peano__qyi4712407557780062981__to_u128 [#"../../creu
 
 end
 module M_creusot_contracts__peano__qyi4712407557780062981__to_i128 [#"../../creusot-contracts/src/peano.rs" 103 4 103 32] (* peano::PeanoInt *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 102 14 102 30
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
   
@@ -21961,6 +22905,11 @@ module M_creusot_contracts__peano__qyi4712407557780062981__to_i128 [#"../../creu
 
 end
 module M_creusot_contracts__peano__qyi924939193479538090__from [#"../../creusot-contracts/src/peano.rs" 110 4 110 34] (* <u64 as std::convert::From<peano::PeanoInt>> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 109 14 109 29
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 80 14 80 30
   let%span speano'1 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
@@ -21989,6 +22938,11 @@ module M_creusot_contracts__peano__qyi924939193479538090__from [#"../../creusot-
 
 end
 module M_creusot_contracts__peano__qyi18279771819627139730__from [#"../../creusot-contracts/src/peano.rs" 117 4 117 34] (* <i64 as std::convert::From<peano::PeanoInt>> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 116 14 116 29
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 88 14 88 30
   let%span speano'1 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
@@ -22017,6 +22971,11 @@ module M_creusot_contracts__peano__qyi18279771819627139730__from [#"../../creuso
 
 end
 module M_creusot_contracts__peano__qyi6128796959392123454__from [#"../../creusot-contracts/src/peano.rs" 124 4 124 34] (* <u128 as std::convert::From<peano::PeanoInt>> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 123 14 123 29
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 95 14 95 30
   let%span speano'1 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
@@ -22046,6 +23005,11 @@ module M_creusot_contracts__peano__qyi6128796959392123454__from [#"../../creusot
 
 end
 module M_creusot_contracts__peano__qyi11594489632978387465__from [#"../../creusot-contracts/src/peano.rs" 131 4 131 34] (* <i128 as std::convert::From<peano::PeanoInt>> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span speano = "../../creusot-contracts/src/peano.rs" 130 14 130 29
   let%span speano'0 = "../../creusot-contracts/src/peano.rs" 102 14 102 30
   let%span speano'1 = "../../creusot-contracts/src/peano.rs" 40 4 40 12
@@ -22075,6 +23039,11 @@ module M_creusot_contracts__peano__qyi11594489632978387465__from [#"../../creuso
 
 end
 module M_creusot_contracts__ptr_own__qyi13445900742793785996__new [#"../../creusot-contracts/src/ptr_own.rs" 59 4 59 53] (* ptr_own::PtrOwn<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sboxed = "../../creusot-contracts/src/std/boxed.rs" 33 8 33 18
   let%span sptr = "../../creusot-contracts/src/std/ptr.rs" 80 14 80 48
   let%span sptr'0 = "../../creusot-contracts/src/std/ptr.rs" 82 8 82 30
@@ -22176,6 +23145,11 @@ module M_creusot_contracts__ptr_own__qyi13445900742793785996__new [#"../../creus
 
 end
 module M_creusot_contracts__ptr_own__qyi13445900742793785996__drop [#"../../creusot-contracts/src/ptr_own.rs" 133 4 133 61] (* ptr_own::PtrOwn<T> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sresolve = "../../creusot-contracts/src/resolve.rs" 68 8 68 23
   let%span sboxed = "../../creusot-contracts/src/std/boxed.rs" 33 8 33 18
   let%span sptr = "../../creusot-contracts/src/std/ptr.rs" 80 14 80 48
@@ -22278,6 +23252,11 @@ module M_creusot_contracts__ptr_own__qyi13445900742793785996__drop [#"../../creu
 
 end
 module M_creusot_contracts__resolve__qyi14648068534830670712__resolve_coherence [#"../../creusot-contracts/src/resolve.rs" 47 4 47 31] (* <(T1, T2) as resolve::Resolve> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sresolve = "../../creusot-contracts/src/resolve.rs" 45 15 45 39
   let%span sresolve'0 = "../../creusot-contracts/src/resolve.rs" 46 14 46 31
   let%span sresolve'1 = "../../creusot-contracts/src/resolve.rs" 47 32 47 34
@@ -22309,6 +23288,11 @@ module M_creusot_contracts__resolve__qyi14648068534830670712__resolve_coherence 
   goal vc_resolve_coherence : ([%#sresolve] structural_resolve self)  -> ([%#sresolve'0] resolve'1 self)
 end
 module M_creusot_contracts__resolve__qyi2388451659218500115__resolve_coherence [#"../../creusot-contracts/src/resolve.rs" 61 4 61 31] (* <&mut T as resolve::Resolve> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sresolve = "../../creusot-contracts/src/resolve.rs" 59 15 59 39
   let%span sresolve'0 = "../../creusot-contracts/src/resolve.rs" 60 14 60 31
   let%span sresolve'1 = "../../creusot-contracts/src/resolve.rs" 61 32 61 34
@@ -22331,6 +23315,11 @@ module M_creusot_contracts__resolve__qyi2388451659218500115__resolve_coherence [
   goal vc_resolve_coherence : ([%#sresolve] structural_resolve self)  -> ([%#sresolve'0] resolve self)
 end
 module M_creusot_contracts__resolve__qyi1404978253314751379__resolve_coherence [#"../../creusot-contracts/src/resolve.rs" 75 4 75 31] (* <std::boxed::Box<T> as resolve::Resolve> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sresolve = "../../creusot-contracts/src/resolve.rs" 73 15 73 39
   let%span sresolve'0 = "../../creusot-contracts/src/resolve.rs" 74 14 74 31
   let%span sresolve'1 = "../../creusot-contracts/src/resolve.rs" 75 32 75 34
@@ -22353,6 +23342,11 @@ module M_creusot_contracts__resolve__qyi1404978253314751379__resolve_coherence [
   goal vc_resolve_coherence : ([%#sresolve] structural_resolve self)  -> ([%#sresolve'0] resolve'0 self)
 end
 module M_creusot_contracts__resolve__qyi11332258715134532170__resolve_coherence [#"../../creusot-contracts/src/resolve.rs" 92 4 92 31] (* <std::option::Option<T> as resolve::Resolve> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sresolve = "../../creusot-contracts/src/resolve.rs" 90 15 90 39
   let%span sresolve'0 = "../../creusot-contracts/src/resolve.rs" 91 14 91 31
   let%span sresolve'1 = "../../creusot-contracts/src/resolve.rs" 92 32 92 34
@@ -22385,6 +23379,11 @@ module M_creusot_contracts__resolve__qyi11332258715134532170__resolve_coherence 
   goal vc_resolve_coherence : ([%#sresolve] structural_resolve self)  -> ([%#sresolve'0] resolve'0 self)
 end
 module M_creusot_contracts__snapshot__qyi17576604998327728858__clone [#"../../creusot-contracts/src/snapshot.rs" 57 4 57 27] (* <snapshot::Snapshot<T> as std::clone::Clone> *)
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span ssnapshot = "../../creusot-contracts/src/snapshot.rs" 56 14 56 29
   
   use creusot.prelude.Any
@@ -22400,6 +23399,11 @@ module M_creusot_contracts__snapshot__qyi17576604998327728858__clone [#"../../cr
 
 end
 module M_creusot_contracts__util__unwrap [#"../../creusot-contracts/src/util.rs" 57 0 57 36]
+  type namespace_other
+  
+  type t_Namespace  =
+    | Other namespace_other
+  
   let%span sutil = "../../creusot-contracts/src/util.rs" 55 11 55 21
   let%span sutil'0 = "../../creusot-contracts/src/util.rs" 56 10 56 28
   let%span sutil'1 = "../../creusot-contracts/src/util.rs" 45 11 45 16

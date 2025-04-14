@@ -4,6 +4,7 @@ use crate::{
         program::borrow_generated_id,
         ty::{constructor, floatty_to_prelude, ity_to_prelude, translate_ty, uty_to_prelude},
     },
+    contracts_items::is_new_namespace,
     ctx::*,
     naming::name,
     pearlite::{BinOp, Literal, Pattern, PatternKind, QuantKind, Term, TermKind, Trigger, UnOp},
@@ -182,8 +183,18 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
                 };
                 Exp::UnaryOp(op, self.lower_term(arg).boxed())
             }
-            TermKind::Call { id, subst, args, .. } => Exp::Var(self.names.item(*id, *subst))
-                .app(args.into_iter().map(|arg| self.lower_term(arg))),
+            TermKind::Call { id, subst, args, .. } => {
+                // Calling a function declared by `declare_namespace`: generate an identifier for it.
+                if is_new_namespace(self.ctx.tcx, *id) {
+                    return Exp::Constructor {
+                        ctor: Name::local(self.ctx.get_namespace_constructor(*id)),
+                        args: Box::new([Exp::int(0)]),
+                    };
+                }
+
+                Exp::Var(self.names.item(*id, subst))
+                    .app(args.into_iter().map(|arg| self.lower_term(arg)))
+            }
             TermKind::Quant { kind, binder, box body, trigger } => {
                 let bound = binder.iter().map(|(s, t)| (s.0, self.lower_ty(*t)));
                 let body = self.lower_term(body);
@@ -275,12 +286,11 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
                         Binder::typed(ident.0, self.lower_ty(ty))
                     })
                     .collect();
-                let body = self.lower_term(&*body);
-                Exp::Lam(binders, body.boxed())
+                Exp::Lam(binders, self.lower_term(body).boxed())
             }
             TermKind::Reborrow { cur, fin, inner, projection } => {
-                let inner = self.lower_term(&*inner);
-                let borrow_id = borrow_generated_id(self.names, inner, &projection, |x| {
+                let inner = self.lower_term(inner);
+                let borrow_id = borrow_generated_id(self.names, inner, projection, |x| {
                     if matches!(x.ty.kind(), TyKind::Uint(UintTy::Usize)) {
                         let qname =
                             self.names.in_pre(uty_to_prelude(self.ctx.tcx, UintTy::Usize), "t'int");
@@ -291,8 +301,8 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
                 });
 
                 Exp::qvar(self.names.in_pre(PreMod::MutBor, "borrow_logic")).app([
-                    self.lower_term(&*cur),
-                    self.lower_term(&*fin),
+                    self.lower_term(cur),
+                    self.lower_term(fin),
                     borrow_id,
                 ])
             }
@@ -318,9 +328,9 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
         match &pat.kind {
             PatternKind::Constructor(variant, fields) => {
                 let ty = self.names.normalize(self.ctx, pat.ty);
-                let (var_did, subst) = match ty.kind() {
-                    &TyKind::Adt(def, subst) => (def.variant(*variant).def_id, subst),
-                    &TyKind::Closure(did, subst) => (did, subst),
+                let (var_did, subst) = match *ty.kind() {
+                    TyKind::Adt(def, subst) => (def.variant(*variant).def_id, subst),
+                    TyKind::Closure(did, subst) => (did, subst),
                     _ => unreachable!(),
                 };
                 let flds = fields.iter().map(|pat| self.lower_pat(pat));
@@ -337,7 +347,7 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
                         .map(|(i, f)| (Name::local(self.names.field(var_did, subst, i.into())), f))
                         .filter(|(_, f)| !matches!(f, WPattern::Wildcard))
                         .collect();
-                    if flds.len() == 0 { WPattern::Wildcard } else { WPattern::RecP(flds) }
+                    if flds.is_empty() { WPattern::Wildcard } else { WPattern::RecP(flds) }
                 }
             }
             PatternKind::Wildcard => WPattern::Wildcard,
@@ -357,7 +367,7 @@ impl<'tcx, N: Namer<'tcx>> Lower<'_, 'tcx, N> {
                     })
                     .filter(|(_, f)| !matches!(f, WPattern::Wildcard))
                     .collect();
-                if flds.len() == 0 { WPattern::Wildcard } else { WPattern::RecP(flds) }
+                if flds.is_empty() { WPattern::Wildcard } else { WPattern::RecP(flds) }
             }
             PatternKind::Deref(pointee) => {
                 let ty = self.names.normalize(self.ctx, pat.ty);
