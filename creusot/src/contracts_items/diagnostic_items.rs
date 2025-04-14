@@ -116,6 +116,8 @@ contracts_items! {{
         is_fn_pure_ty                   get_fn_pure_ty
     trait FnPure                         ["fn_pure_trait"]
         is_fn_pure_trait                get_fn_pure_trait
+    type Namespace                       ["namespace_ty"]
+        is_namespace_ty                 get_namespace_ty
 }}
 
 contracts_items! { #[std_items] {

@@ -75,6 +75,7 @@ proc_macros! {
     ghost
     pearlite
     extern_spec
+    declare_namespace
 }
 
 #[proc_macro_derive(DeepModel, attributes(DeepModelTy))]

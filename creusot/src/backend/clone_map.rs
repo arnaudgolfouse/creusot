@@ -173,7 +173,7 @@ pub(crate) trait Namer<'tcx> {
             }
             (PreMod::Any, _) => ["creusot", "prelude", "Any"],
         };
-        name.into_iter().map(|s| Symbol::intern(s)).collect()
+        name.into_iter().map(Symbol::intern).collect()
     }
 
     fn in_pre(&self, module: PreMod, name: &str) -> QName {
@@ -208,7 +208,7 @@ impl<'tcx> Namer<'tcx> for CloneNames<'tcx> {
     fn span(&self, span: Span) -> Option<Attribute> {
         let path = path_of_span(self.tcx, span, &self.span_mode)?;
         let ident = self.spans.insert(span, |_| {
-            Box::new(Ident::fresh_local(&format!(
+            Box::new(Ident::fresh_local(format!(
                 "s{}",
                 path.file_stem().unwrap().to_str().unwrap()
             )))
@@ -355,6 +355,13 @@ impl<'tcx> Dependencies<'tcx> {
         deps
     }
 
+    /// Get a name for an type, _without_ adding it to the list of dependencies.
+    ///
+    /// This is a hack, used to handle namespaces.
+    pub(crate) fn def_ty_no_dependency(&self, def_id: DefId, subst: GenericArgsRef<'tcx>) -> Name {
+        self.names.def_ty(def_id, subst)
+    }
+
     pub(crate) fn provide_deps(mut self, ctx: &Why3Generator<'tcx>) -> Vec<Decl> {
         trace!("emitting dependencies for {:?}", self.self_id);
         let mut decls = Vec::new();
@@ -400,7 +407,7 @@ impl<'tcx> Dependencies<'tcx> {
                         if let Some((did, _)) = node.did()
                             && get_builtin(self.tcx, did).is_some()
                         {
-                            return false;
+                            false
                         } else {
                             match node {
                                 Dependency::TupleField(..)
@@ -488,14 +495,12 @@ impl<'tcx> Dependencies<'tcx> {
             })
             .collect();
 
-        let dependencies = if spans.is_empty() {
+        if spans.is_empty() {
             decls
         } else {
             let mut tmp = vec![Decl::LetSpans(spans)];
             tmp.extend(decls);
             tmp
-        };
-
-        dependencies
+        }
     }
 }
