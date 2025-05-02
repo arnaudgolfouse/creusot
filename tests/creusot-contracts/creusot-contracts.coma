@@ -15685,71 +15685,85 @@ module M_creusot_contracts__ghost__qyi5572048714256451829__into_inner [#"../../c
       (! return' {result}) ]
 
 end
-module M_creusot_contracts__local_invariant__qyi15885963704852686872__new [#"../../creusot-contracts/src/local_invariant.rs" 28 4 28 24] (* local_invariant::Namespace *)
+module M_creusot_contracts__local_invariant__qyi15885963704852686872__new [#"../../creusot-contracts/src/local_invariant.rs" 30 4 30 24] (* local_invariant::Namespace *)
   type namespace_other
   
   type t_Namespace  =
     | Other namespace_other
   
-  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 26 15 26 20
-  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 29 8 29 16
+  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 28 15 28 20
+  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 31 8 31 16
   
-  function new [#"../../creusot-contracts/src/local_invariant.rs" 28 4 28 24]  : t_Namespace
+  function new [#"../../creusot-contracts/src/local_invariant.rs" 30 4 30 24]  : t_Namespace
   
   goal vc_new : true
 end
-module M_creusot_contracts__local_invariant__qyi11065178617703918540__new [#"../../creusot-contracts/src/local_invariant.rs" 43 4 43 64] (* local_invariant::LocalInvariant<T> *)
+module M_creusot_contracts__local_invariant__qyi8392113778061445395__new [#"../../creusot-contracts/src/local_invariant.rs" 82 4 82 83] (* local_invariant::LocalInvariant<T, D> *)
   type namespace_other
   
   type t_Namespace  =
     | Other namespace_other
   
-  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 45 30 45 46
-  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 43 15 43 20
-  let%span slocal_invariant'1 = "../../creusot-contracts/src/local_invariant.rs" 43 60 43 64
-  let%span slocal_invariant'2 = "../../creusot-contracts/src/local_invariant.rs" 41 14 41 36
-  let%span slocal_invariant'3 = "../../creusot-contracts/src/local_invariant.rs" 42 14 42 46
-  let%span slocal_invariant'4 = "../../creusot-contracts/src/local_invariant.rs" 56 4 56 12
-  let%span slocal_invariant'5 = "../../creusot-contracts/src/local_invariant.rs" 49 4 49 12
+  let%span slocal_invariant = "../../creusot-contracts/src/local_invariant.rs" 82 15 82 20
+  let%span slocal_invariant'0 = "../../creusot-contracts/src/local_invariant.rs" 79 15 79 47
+  let%span slocal_invariant'1 = "../../creusot-contracts/src/local_invariant.rs" 82 79 82 83
+  let%span slocal_invariant'2 = "../../creusot-contracts/src/local_invariant.rs" 80 14 80 36
+  let%span slocal_invariant'3 = "../../creusot-contracts/src/local_invariant.rs" 81 14 81 46
+  let%span slocal_invariant'4 = "../../creusot-contracts/src/local_invariant.rs" 94 4 94 12
+  let%span slocal_invariant'5 = "../../creusot-contracts/src/local_invariant.rs" 87 4 87 12
   
   use creusot.prelude.Any
   
   type t_T
   
-  type t_LocalInvariant  =
-    { t_LocalInvariant__value: t_T; t_LocalInvariant__initial_value: t_T; t_LocalInvariant__namespace: t_Namespace }
-  
-  predicate invariant' [#"../../creusot-contracts/src/invariant.rs" 6 4 6 31] (self : t_T)
+  type t_UnsafeCell  =
+    { t_UnsafeCell__value: t_T }
   
   predicate inv [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_T)
   
-  axiom inv_axiom : forall x : t_T [inv x] . inv x  -> invariant' x
+  predicate inv'0 [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_UnsafeCell)
   
-  predicate inv'0 [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_LocalInvariant)
-  
-  axiom inv_axiom'0 [@rewrite] : forall x : t_LocalInvariant [inv'0 x] . inv'0 x
+  axiom inv_axiom [@rewrite] : forall x : t_UnsafeCell [inv'0 x] . inv'0 x
   = match x with
-    | {t_LocalInvariant__value = value ; t_LocalInvariant__initial_value = initial_value ; t_LocalInvariant__namespace = namespace} -> inv value
+    | {t_UnsafeCell__value = value} -> inv value
     end
   
-  function init [#"../../creusot-contracts/src/local_invariant.rs" 58 4 58 26] (self : t_LocalInvariant) : t_T =
-    [%#slocal_invariant'4] self.t_LocalInvariant__initial_value
+  let rec new (value:t_T) (return'  (x:t_UnsafeCell))= {[@expl:new 'value' type invariant] inv value}
+    any [ return''0 (result:t_UnsafeCell)-> {inv'0 result} (! return' {result}) ] 
   
-  function namespace [#"../../creusot-contracts/src/local_invariant.rs" 51 4 51 39] (self : t_LocalInvariant) : t_Namespace
+  type t_D
+  
+  type t_LocalInvariant  =
+    { t_LocalInvariant__value: t_UnsafeCell; t_LocalInvariant__data: t_D; t_LocalInvariant__namespace: t_Namespace }
+  
+  predicate invariant_with_data [#"../../creusot-contracts/src/local_invariant.rs" 75 4 75 50] (self : t_T) (data : t_D)
+  
+  predicate inv'1 [#"../../creusot-contracts/src/invariant.rs" 42 0 42 35] (_0 : t_LocalInvariant)
+  
+  axiom inv_axiom'0 [@rewrite] : forall x : t_LocalInvariant [inv'1 x] . inv'1 x
+  = match x with
+    | {t_LocalInvariant__value = value ; t_LocalInvariant__data = data ; t_LocalInvariant__namespace = namespace} -> inv'0 value
+    end
+  
+  function data [#"../../creusot-contracts/src/local_invariant.rs" 97 4 97 26] (self : t_LocalInvariant) : t_D =
+    [%#slocal_invariant'4] self.t_LocalInvariant__data
+  
+  function namespace [#"../../creusot-contracts/src/local_invariant.rs" 89 4 89 39] (self : t_LocalInvariant) : t_Namespace
   
    =
     [%#slocal_invariant'5] self.t_LocalInvariant__namespace
   
   meta "compute_max_steps" 1000000
   
-  let rec new[#"../../creusot-contracts/src/local_invariant.rs" 43 4 43 64] (value:t_T) (namespace'0:t_Namespace) (return'  (x:t_LocalInvariant))= {[@expl:new 'value' type invariant] [%#slocal_invariant'0] inv value}
+  let rec new'0[#"../../creusot-contracts/src/local_invariant.rs" 82 4 82 83] (value:t_T) (data'0:t_D) (namespace'0:t_Namespace) (return'  (x:t_LocalInvariant))= {[@expl:new 'value' type invariant] [%#slocal_invariant] inv value}
+    {[@expl:new requires] [%#slocal_invariant'0] invariant_with_data value data'0}
     (! bb0
     [ bb0 = bb1
-    | bb1 = s0 [ s0 =  [ &_5 <- [%#slocal_invariant] value'0 ] s1 | s1 = bb2 ] 
+    | bb1 = s0 [ s0 = new {value'0} (fun (_ret:t_UnsafeCell) ->  [ &_7 <- _ret ] s1) | s1 = bb2 ] 
     | bb2 = s0
       [ s0 = 
-        [ &_0 <- { t_LocalInvariant__value = value'0;
-                   t_LocalInvariant__initial_value = _5;
+        [ &_0 <- { t_LocalInvariant__value = _7;
+                   t_LocalInvariant__data = data'1;
                    t_LocalInvariant__namespace = namespace'1 } ]
         
         s1
@@ -15760,11 +15774,12 @@ module M_creusot_contracts__local_invariant__qyi11065178617703918540__new [#"../
     )
     [ & _0 : t_LocalInvariant = Any.any_l ()
     | & value'0 : t_T = value
+    | & data'1 : t_D = data'0
     | & namespace'1 : t_Namespace = namespace'0
-    | & _5 : t_T = Any.any_l () ]
+    | & _7 : t_UnsafeCell = Any.any_l () ]
     
-    [ return''0 (result:t_LocalInvariant)-> {[@expl:new result type invariant] [%#slocal_invariant'1] inv'0 result}
-      {[@expl:new ensures #0] [%#slocal_invariant'2] init result = value}
+    [ return''0 (result:t_LocalInvariant)-> {[@expl:new result type invariant] [%#slocal_invariant'1] inv'1 result}
+      {[@expl:new ensures #0] [%#slocal_invariant'2] data result = data'0}
       {[@expl:new ensures #1] [%#slocal_invariant'3] namespace result = namespace'0}
       (! return' {result}) ]
 

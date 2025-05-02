@@ -1,3 +1,10 @@
+//! Define local invariants
+//!
+//! [Local invariants](LocalInvariant) are not the same as [invariants](Invariant): they
+//! allow the use of a shared piece of data to be used in the invariant (see
+//! [`LocalInvariantSpec`]), but in return they impose a much more restricted access to
+//! the underlying data, as well as the use of [`Namespaces`].
+
 use crate::{logic::Set, *};
 use ::std::cell::UnsafeCell;
 
@@ -16,7 +23,8 @@ pub use base_macros::declare_namespace;
 
 /// The type of _namespaces_ associated with invariants.
 ///
-/// FIXME: more docs
+/// Can be declared with the [`declare_namespace`] macro, and then attached to a local
+/// invariant when creating it with [`LocalInvariant::new`].
 #[cfg_attr(creusot, rustc_diagnostic_item = "namespace_ty")]
 pub struct Namespace(());
 
@@ -31,10 +39,41 @@ impl Namespace {
     }
 }
 
-#[allow(dead_code)] // FIXME
+/// A collection of namespaces.
+///
+/// This is given at the start of the program, and must be passed along to [LocalInvariant::open].
+pub struct Namespaces<'a>(::std::marker::PhantomData<&'a mut Vec<Namespace>>);
+
+impl Namespaces<'_> {
+    #[logic]
+    #[open(self)]
+    #[trusted]
+    pub fn namespaces(self) -> Set<Namespace> {
+        dead
+    }
+
+    #[ensures((*self).namespaces() == result.namespaces())]
+    #[ensures((^self).namespaces() == result.namespaces())]
+    #[trusted]
+    pub fn reborrow(&mut self) -> Namespaces {
+        Namespaces(::std::marker::PhantomData)
+    }
+}
+
+impl View for Namespaces<'_> {
+    type ViewTy = Set<Namespace>;
+    #[logic]
+    #[open]
+    fn view(self) -> Set<Namespace> {
+        self.namespaces()
+    }
+}
+
 pub struct LocalInvariant<T, D> {
     value: UnsafeCell<T>,
-    data: Snapshot<D>,
+    #[cfg_attr(not(creusot), allow(unused))]
+    public: Snapshot<D>,
+    #[cfg_attr(not(creusot), allow(unused))]
     namespace: Snapshot<Namespace>,
 }
 
@@ -43,89 +82,20 @@ pub trait LocalInvariantSpec<D> {
     fn invariant_with_data(self, data: D) -> bool;
 }
 
-/// Type returned by [`LocalInvariant::open`].
-///
-/// This is a proxy for `&'a mut T`, with an additional invariant [depending on `D`](LocalInvariantSpec).
-pub struct OpenLocalInv<'a, T, D> {
-    #[cfg_attr(not(creusot), allow(unused))]
-    data: Snapshot<D>,
-    value: &'a mut T,
-}
-
-#[cfg_attr(not(creusot), allow(clippy::needless_lifetimes))]
-impl<'a, T, D> OpenLocalInv<'a, T, D> {
-    /// Get the additionnal data associated with the invariant.
-    ///
-    /// This is the data that was passed in [`LocalInvariant::new`], and the one used in
-    /// [`LocalInvariantSpec`].
-    #[logic]
-    #[open(self)]
-    pub fn data(self) -> D {
-        *self.data
-    }
-
-    /// Get the contained borrow.
-    #[logic]
-    #[open(self)]
-    pub fn value(self) -> &'a mut T {
-        self.value
-    }
-
-    /// Use the contained data in a closure.
-    ///
-    /// The closure is required to restore the [`LocalInvariantSpec`] by the end of its execution.
-    #[requires(forall<b: &mut T> *b == *self.value() ==> f.precondition((b,)))]
-    #[requires(forall<b: &mut T>
-        *b == *self.value() ==>
-        (exists<f_fin: _> f.postcondition_mut((b,), f_fin, ())) ==>
-        (^b).invariant_with_data(self.data()))]
-    #[ensures((*self.value()).invariant_with_data(self.data()))]
-    #[ensures((*self).data() == (^self).data())]
-    #[ensures(exists<b: &mut T, f_fin: _>
-        *b == *self.value() &&
-        f.postcondition_mut((b,), f_fin, ()) &&
-        *(^self).value() == ^b)]
-    #[ensures(^(*self).value() == ^(^self).value())]
-    pub fn open(&mut self, mut f: impl FnMut(&mut T))
-    where
-        T: LocalInvariantSpec<D>,
-    {
-        f(&mut *self.value)
-    }
-}
-
-impl<T, D> Resolve for OpenLocalInv<'_, T, D> {
-    #[predicate(prophetic)]
-    #[open]
-    fn resolve(self) -> bool {
-        resolve(&self.value())
-    }
-
-    #[logic(prophetic)]
-    #[requires(inv(self))]
-    #[requires(structural_resolve(self))]
-    #[ensures((*self).resolve())]
-    #[open]
-    fn resolve_coherence(&self) {}
-}
-
-impl<D, T: LocalInvariantSpec<D>> Invariant for OpenLocalInv<'_, T, D> {
-    #[predicate(prophetic)]
-    #[open]
-    fn invariant(self) -> bool {
-        pearlite! {
-            (*self.value()).invariant_with_data(self.data())
-                && (^self.value()).invariant_with_data(self.data())
-        }
-    }
-}
-
 impl<D, T: LocalInvariantSpec<D>> LocalInvariant<T, D> {
-    #[requires(value.invariant_with_data(*data))]
-    #[ensures(result.data() == *data)]
+    /// Construct a `LocalInvariant`
+    ///
+    /// # Parameters
+    /// - `value`: the actual data contained in the invariant. Use [`Self::open`] to
+    /// access it. Also called the 'private' part of the invariant.
+    /// - `public`: the 'public' part of the invariant.
+    /// - `namespace`: the namespace of the invariant.
+    ///   This is required to avoid [open](Self::open)ing the same invariant twice.
+    #[requires(value.invariant_with_data(*public))]
+    #[ensures(result.public() == *public)]
     #[ensures(result.namespace() == *namespace)]
-    pub fn new(value: T, data: Snapshot<D>, namespace: Snapshot<Namespace>) -> Self {
-        Self { value: UnsafeCell::new(value), data, namespace }
+    pub fn new(value: T, public: Snapshot<D>, namespace: Snapshot<Namespace>) -> Self {
+        Self { value: UnsafeCell::new(value), public, namespace }
     }
 
     /// Get the namespace associated with this invariant.
@@ -135,22 +105,37 @@ impl<D, T: LocalInvariantSpec<D>> LocalInvariant<T, D> {
         *self.namespace
     }
 
-    /// Get the data used to create this invariant.
+    /// Get the 'public' part of this invariant.
     #[logic]
     #[open(self)]
-    pub fn data(self) -> D {
-        *self.data
+    pub fn public(self) -> D {
+        *self.public
     }
 
+    /// Open the invariant to get the data stored inside.
+    ///
+    /// This will call the closure `f` with the inner data. You must restore the
+    /// contained [`LocalInvariantSpec`] before returning from the closure.
+    ///
     /// # Safety
     ///
-    /// Do not use without verifiying your program with Creusot ;)
+    /// When the program is verified using Creusot, this function is safe to call.
+    /// Else, you **must** ensure that this invariant is not opened again in the closure.
     #[trusted]
-    #[pure]
-    #[requires(namespace.contains(self.namespace()))]
-    #[ensures((^namespace.inner_logic()) == (*namespace.inner_logic()).remove(self.namespace()))]
-    pub unsafe fn open(&self, namespaces: Ghost<&mut Set<Namespace>>) -> OpenLocalInv<T, D> {
+    #[requires(namespaces@.contains(self.namespace()))]
+    #[requires(forall<t: &mut T> (*t).invariant_with_data(self.public()) ==>
+        f.precondition((t,)) &&
+        // f must restore the invariant
+        (forall<res: A> f.postcondition_once((t,), res) ==> (^t).invariant_with_data(self.public())))]
+    #[ensures((**result.1).invariant_with_data(self.public()) && f.postcondition_once((*result.1,), result.0))]
+    pub unsafe fn open<'a, A>(
+        &'a self,
+        namespaces: Namespaces<'a>,
+        f: impl FnOnce(&'a mut T) -> A,
+    ) -> (A, Snapshot<&'a mut T>) {
         let _ = namespaces;
-        OpenLocalInv { data: self.data, value: unsafe { &mut *self.value.get() } }
+        let borrow = unsafe { &mut *self.value.get() };
+        let res1 = snapshot!(borrow);
+        (f(borrow), res1)
     }
 }
