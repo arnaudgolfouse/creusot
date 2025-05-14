@@ -52,6 +52,11 @@ extern_spec! {
                 #[pure]
                 #[ensures(**self == *result)]
                 fn as_ref(&self) -> &T;
+
+                #[pure]
+                #[ensures(*b == *result)]
+                fn leak<'a>(b: Self) -> &'a mut T
+                    where A: 'a;
             }
         }
     }
