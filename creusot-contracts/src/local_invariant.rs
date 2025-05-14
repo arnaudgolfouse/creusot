@@ -75,6 +75,7 @@ impl View for Namespaces<'_> {
     }
 }
 
+// FIXME: bound T: LocalInvariantSpec
 pub struct LocalInvariant<T, D> {
     value: UnsafeCell<T>,
     #[cfg_attr(not(creusot), allow(unused))]
@@ -83,6 +84,7 @@ pub struct LocalInvariant<T, D> {
     namespace: Snapshot<Namespace>,
 }
 
+// FIXME: type associé
 pub trait LocalInvariantSpec<D> {
     #[predicate]
     fn invariant_with_data(self, data: D) -> bool;
