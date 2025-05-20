@@ -1,5 +1,4 @@
-use crate::*;
-use crate::logic::Mapping;
+use crate::{logic::Mapping, *};
 use ::std::cmp::Ordering;
 pub use ::std::option::*;
 
