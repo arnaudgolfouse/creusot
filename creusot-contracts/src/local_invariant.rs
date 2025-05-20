@@ -55,6 +55,7 @@ impl Namespaces<'_> {
     #[ensures((*self).namespaces() == result.namespaces())]
     #[ensures((^self).namespaces() == result.namespaces())]
     #[trusted]
+    #[pure]
     pub fn reborrow(&mut self) -> Namespaces {
         Namespaces(::std::marker::PhantomData)
     }
@@ -131,6 +132,11 @@ impl<D, T: LocalInvariantSpec<D>> LocalInvariant<T, D> {
     ///
     /// When the program is verified using Creusot, this function is safe to call.
     /// Else, you **must** ensure that this invariant is not opened again in the closure.
+    ///
+    /// # Return
+    ///
+    /// This returns the result of the closure, as well as the (logical) value on which
+    /// the closure was called.
     #[trusted]
     #[requires(namespaces@.contains(self.namespace()))]
     #[requires(forall<t: &mut T> (*t).invariant_with_data(self.public()) ==>
@@ -138,9 +144,10 @@ impl<D, T: LocalInvariantSpec<D>> LocalInvariant<T, D> {
         // f must restore the invariant
         (forall<res: A> f.postcondition_once((t,), res) ==> (^t).invariant_with_data(self.public())))]
     #[ensures((**result.1).invariant_with_data(self.public()) && f.postcondition_once((*result.1,), result.0))]
+    #[pure]
     pub unsafe fn open<'a, A>(
         &'a self,
-        namespaces: Namespaces<'a>,
+        namespaces: Ghost<Namespaces<'a>>,
         f: impl FnOnce(&'a mut T) -> A,
     ) -> (A, Snapshot<&'a mut T>) {
         let _ = namespaces;
