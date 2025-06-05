@@ -46,14 +46,6 @@ impl<R: RA> View for Resource<R> {
     }
 }
 
-impl<R: RA> Invariant for Resource<R> {
-    #[predicate]
-    #[open]
-    fn invariant(self) -> bool {
-        self.val().valid()
-    }
-}
-
 #[allow(unused_variables)]
 impl<R: RA> Resource<R> {
     /// Get the id for this resource.
@@ -78,6 +70,7 @@ impl<R: RA> Resource<R> {
     /// Get the RA contained in this resource.
     #[logic]
     #[trusted]
+    #[ensures(result.valid())]
     pub fn val(self) -> R {
         dead
     }
