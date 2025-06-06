@@ -26,6 +26,8 @@ use crate::{logic::Set, *};
 ///
 /// # Notes on the definition of resource algebras
 ///
+/// FIXME: review this documentation with respect to the latest changes
+///
 /// Our definition of resource algebras differs from the one in Iris in that it
 /// does not require RAs to define a "core" function. Instead, we follow "Idempotent
 /// Resources in Separation Logic --- The Heart of core in Iris" by Gratzer, Møller &
@@ -53,12 +55,15 @@ pub trait RA: Sized {
     #[logic]
     fn op(self, other: Self) -> Self;
 
-    /// Whether the resource algebra is valid.
+    /// Define the combination of `self` and `other` to be _compatible_.
     ///
-    /// The logic encoded in Iris ensures that [`Resource`](crate::resource::Resource)s
-    /// are always valid.
+    /// The result of [`Self::op`] only makes sense for compatible elements.
+    /// This is observed by the fact that:
+    /// - Other laws of this trait are conditioned on compatibility
+    /// - [`Resource::split`](crate::resource::Resource::split) is conditioned
+    /// on compatibility.
     #[logic]
-    fn valid(self) -> bool;
+    fn compatible(self, other: Self) -> bool;
 
     // Derived notions: `incl`, `idemp`.
     // We allow the implementor to give a custom definition, that is possibly
@@ -93,8 +98,8 @@ pub trait RA: Sized {
     /// we do here).
     #[logic]
     #[ensures(match result {
-        Some(c) => self.op(c) == other,
-        None => forall<c: Self> self.op(c) != other,
+        Some(c) => self.compatible(c) && self.op(c) == other,
+        None => forall<c: Self> !(self.compatible(c) && self.op(c) == other),
     })]
     fn incl(self, other: Self) -> Option<Self>;
 
@@ -102,30 +107,28 @@ pub trait RA: Sized {
     ///
     /// This means that this particular element can be duplicated with [`Self::op`].
     #[logic]
-    #[ensures(result == (self.op(self) == self))]
+    #[ensures(result == (self.compatible(self) && (self.op(self) == self)))]
     fn idemp(self) -> bool;
 
     // Laws
 
     /// [`Self::op`] is commutative.
     #[law]
+    #[requires(a.compatible(b))]
+    #[ensures(b.compatible(a))]
     #[ensures(a.op(b) == b.op(a))]
     fn commutative(a: Self, b: Self);
 
     /// [`Self::op`] is associative.
     #[law]
+    #[requires(a.compatible(b) && a.op(b).compatible(c))]
+    #[ensures(b.compatible(c) && a.compatible(b.op(c)))]
     #[ensures(a.op(b).op(c) == a.op(b.op(c)))]
     fn associative(a: Self, b: Self, c: Self);
-
-    /// Validity cannot be lost by splitting a resource.
-    #[logic]
-    #[ensures(self.op(b).valid() ==> self.valid())]
-    fn valid_op(self, b: Self);
 
     /// For every element, there is a maximal (in the sense of [`Self::incl`]) part
     /// of `self` that is [`Self::idemp`].
     #[logic]
-    #[requires(self.valid())]
     #[ensures(match result {
         Some(b) => b.incl(self) != None && b.idemp() &&
            forall<c: Self> c.incl(self) != None && c.idemp() ==> c.incl(b) != None,
@@ -151,7 +154,7 @@ pub fn incl_transitive<T: RA>(a: T, b: T, c: T) {}
 #[open]
 pub fn update<T: RA>(x: T, y: T) -> bool {
     pearlite! {
-        forall<z: T> x.op(z).valid() ==> y.op(z).valid()
+        forall<z: Option<T>> Some(x).compatible(z) ==> Some(y).compatible(z)
     }
 }
 
@@ -160,7 +163,7 @@ pub fn update<T: RA>(x: T, y: T) -> bool {
 #[open]
 pub fn update_nondet<T: RA>(x: T, s: Set<T>) -> bool {
     pearlite! {
-        forall<z: T> x.op(z).valid() ==>
-            exists<y: T> s.contains(y) && y.op(z).valid()
+        forall<z: Option<T>> Some(x).compatible(z) ==>
+            exists<y: T> s.contains(y) && Some(y).compatible(z)
     }
 }

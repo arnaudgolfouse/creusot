@@ -12,17 +12,17 @@ impl<K, V: RA> RA for FMap<K, V> {
 
     #[logic]
     #[open]
-    fn valid(self) -> bool {
+    fn compatible(self, other: Self) -> bool {
         pearlite! {
-            forall<k: K> self.get(k).valid()
+            forall<k: K> self.get(k).compatible(other.get(k))
         }
     }
 
     #[logic]
     #[open]
     #[ensures(match result {
-        Some(c) => self.op(c) == other,
-        None => forall<c: Self> self.op(c) != other,
+        Some(c) => self.compatible(c) && self.op(c) == other,
+        None => forall<c: Self> !(self.compatible(c) && self.op(c) == other),
     })]
     fn incl(self, other: Self) -> Option<Self> {
         let res = self.missing_part(other);
@@ -31,7 +31,7 @@ impl<K, V: RA> RA for FMap<K, V> {
 
     #[logic]
     #[open]
-    #[ensures(result == (self.op(self) == self))]
+    #[ensures(result == (self.compatible(self) && self.op(self) == self))]
     fn idemp(self) -> bool {
         pearlite! {
             forall<k: K> self.get(k).idemp()
@@ -40,33 +40,32 @@ impl<K, V: RA> RA for FMap<K, V> {
 
     #[law]
     #[open(self)]
+    #[requires(a.compatible(b))]
+    #[ensures(b.compatible(a))]
     #[ensures(a.op(b) == b.op(a))]
-    fn commutative(a: Self, b: Self) {}
+    fn commutative(a: Self, b: Self) {
+        proof_assert!(a.op(b).ext_eq(b.op(a)));
+    }
 
     #[law]
     #[open(self)]
+    #[requires(a.compatible(b) && a.op(b).compatible(c))]
+    #[ensures(b.compatible(c) && a.compatible(b.op(c)))]
     #[ensures(a.op(b).op(c) == a.op(b.op(c)))]
     fn associative(a: Self, b: Self, c: Self) {
         proof_assert!(a.op(b).op(c).ext_eq(a.op(b.op(c))));
     }
 
     #[logic]
-    #[open(self)]
-    #[ensures(self.op(b).valid() ==> self.valid())]
-    fn valid_op(self, b: Self) {
-        let _ = <V as RA>::valid_op;
-    }
-
-    #[logic]
     #[open]
-    #[requires(self.valid())]
     #[ensures(match result {
         Some(b) => b.incl(self) != None && b.idemp() &&
            forall<c: Self> c.incl(self) != None && c.idemp() ==> c.incl(b) != None,
         None => forall<b: Self> ! (b.incl(self) != None && b.idemp()),
     })]
     fn maximal_idemp(self) -> Option<Self> {
-        Some(self.maximal_idemp_part())
+        let res = self.maximal_idemp_part();
+        if res.incl(self) != None { Some(res) } else { None }
     }
 }
 

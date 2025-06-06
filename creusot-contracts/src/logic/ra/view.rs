@@ -28,8 +28,7 @@ pub trait ViewRel {
 /// (of type `R::Frag`).
 ///
 /// The authoritative part is unique, while the fragment part might not be. When the
-/// two are present, the relation between the two must hold in order for the view to
-/// be [valid](RA::valid).
+/// two are present, the relation between the two must hold.
 // NOTE: we could add (discardable) fragments for the auth part
 pub struct View<R>
 where
@@ -53,7 +52,7 @@ where
     #[logic]
     #[open]
     pub fn mkauth(a: R::Auth) -> Self {
-        Self { auth: Some(Excl::Excl(a)), frag: None }
+        Self { auth: Some(Excl(a)), frag: None }
     }
 
     /// Create a new `View` containing a fragment version of `x`.
@@ -77,59 +76,60 @@ where
 
     #[logic]
     #[open]
-    fn valid(self) -> bool {
-        pearlite! {
-            match self {
-                Self { auth: Some(Excl::Excl(a)), frag: Some(f) } => f.valid() && R::rel(a, f),
-                // TODO: why is this condition necessary? Try to remove it
-                Self { auth: None, frag: Some(f) } => f.valid() && exists<a: R::Auth> R::rel(a, f),
-                Self { auth: Some(Excl::Excl(_)), frag: None } => true,
-                Self { auth: None, frag: None } => true,
-                Self { auth: Some(Excl::Bot), frag: _ } => false,
+    fn compatible(self, other: Self) -> bool {
+        (self.auth, self.frag).compatible((other.auth, other.frag))
+            && match (self.auth.op(other.auth), self.frag.op(other.frag)) {
+                (Some(Excl(auth)), Some(frag)) => R::rel(auth, frag),
+                _ => true,
             }
-        }
     }
 
     #[logic]
     #[open]
     #[ensures(match result {
-        Some(c) => self.op(c) == other,
-        None => forall<c: Self> self.op(c) != other,
+        Some(c) => self.compatible(c) && self.op(c) == other,
+        None => forall<c: Self> !(self.compatible(c) && self.op(c) == other),
     })]
     fn incl(self, other: Self) -> Option<Self> {
         match (self.auth, self.frag).incl((other.auth, other.frag)) {
-            Some((auth, frag)) => Some(Self { auth, frag }),
+            Some((auth, frag)) => {
+                let res = Self { auth, frag };
+                if self.compatible(res) { Some(res) } else { None }
+            }
             None => None,
         }
     }
 
     #[logic]
     #[open]
-    #[ensures(result == (self.op(self) == self))]
+    #[ensures(result == (self.compatible(self) && self.op(self) == self))]
     fn idemp(self) -> bool {
         (self.auth, self.frag).idemp()
     }
 
     #[law]
     #[open(self)]
+    #[requires(a.compatible(b))]
+    #[ensures(b.compatible(a))]
     #[ensures(a.op(b) == b.op(a))]
     fn commutative(a: Self, b: Self) {}
 
     #[law]
     #[open(self)]
+    #[requires(a.compatible(b) && a.op(b).compatible(c))]
+    #[ensures(a.compatible(b.op(c)) && b.compatible(c))]
     #[ensures(a.op(b).op(c) == a.op(b.op(c)))]
-    fn associative(a: Self, b: Self, c: Self) {}
-
-    #[logic]
-    #[open(self)]
-    #[ensures(self.op(b).valid() ==> self.valid())]
-    fn valid_op(self, b: Self) {
-        let _ = <R::Frag as RA>::valid_op;
+    fn associative(a: Self, b: Self, c: Self) {
+        match (b.auth.op(c.auth), b.frag.op(c.frag)) {
+            (Some(Excl(_)), Some(_)) => {
+                proof_assert!(a.auth == None);
+            }
+            _ => {}
+        }
     }
 
     #[logic]
     #[open(self)]
-    #[requires(self.valid())]
     #[ensures(match result {
         Some(b) => b.incl(self) != None && b.idemp() &&
            forall<c: Self> c.incl(self) != None && c.idemp() ==> c.incl(b) != None,
@@ -137,7 +137,13 @@ where
     })]
     fn maximal_idemp(self) -> Option<Self> {
         match (self.auth.maximal_idemp(), self.frag.maximal_idemp()) {
-            (Some(auth), Some(frag)) => Some(Self { auth, frag }),
+            (Some(auth), Some(frag)) => {
+                let self_valid = match (self.auth, self.frag) {
+                    (Some(Excl(a)), Some(f)) => R::rel(a, f),
+                    _ => true,
+                };
+                if self_valid { Some(Self { auth, frag }) } else { None }
+            }
             _ => None,
         }
     }

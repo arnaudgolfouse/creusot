@@ -27,7 +27,7 @@ where
     #[logic]
     #[open]
     fn rel(a: Self::Auth, f: Self::Frag) -> bool {
-        f.incl(a) != None && a.valid()
+        f.incl(a) != None
     }
 
     #[law]

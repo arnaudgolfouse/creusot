@@ -14,8 +14,9 @@ use ::std::marker::PhantomData;
 
 /// A ghost wrapper around a [resource algebra](RA).
 ///
-/// This structure is meant to be manipulated in [`ghost`](mod@ghost) code. It is
-/// guaranteed to always contain a [`valid`](RA::valid) resource.
+/// This structure is meant to be manipulated in [`ghost`](mod@ghost) code.
+///
+/// FIXME: review this doc with the latest changes
 ///
 /// The usual usage is this:
 /// - [Create](Self::alloc) some ghost resource
@@ -70,19 +71,17 @@ impl<R: RA> Resource<R> {
     /// Get the RA contained in this resource.
     #[logic]
     #[trusted]
-    #[ensures(result.valid())]
     pub fn val(self) -> R {
         dead
     }
 
-    /// Create a new resource from a valid value.
+    /// Create a new resource from a value.
     ///
     /// # Corresponding reasoning
     ///
-    /// `⌜valid(value)⌝ ⊢ ∃γ, Own(value, γ)`
+    /// `⊢ ∃γ, Own(value, γ)`
     #[trusted]
     #[pure]
-    #[requires(r.valid())]
     #[ensures(result@ == *r)]
     pub fn alloc(r: Snapshot<R>) -> Ghost<Self> {
         Ghost::conjure()
@@ -115,7 +114,7 @@ impl<R: RA> Resource<R> {
     /// `⌜a = b ⋅ c⌝ ∧ Own(a, γ) ⊢ Own(b, γ) ∗ Own(c, γ)`
     #[trusted]
     #[pure]
-    #[requires(self@ == a.op(*b))]
+    #[requires(self@ == a.op(*b) && a.compatible(*b))]
     #[ensures(result.0.id() == self.id() && result.1.id() == self.id())]
     #[ensures(result.0@ == *a)]
     #[ensures(result.1@ == *b)]
@@ -126,7 +125,7 @@ impl<R: RA> Resource<R> {
     /// Split a resource into two, and join it again once the mutable borrows are dropped.
     #[trusted]
     #[pure]
-    #[requires(self@ == a.op(*b))]
+    #[requires(self@ == a.op(*b) && a.compatible(*b))]
     #[ensures(result.0.id() == self.id() && result.1.id() == self.id())]
     #[ensures(result.0@ == *a)]
     #[ensures(result.1@ == *b)]
@@ -139,7 +138,7 @@ impl<R: RA> Resource<R> {
 
     /// Remove `b` from `self` and return it, leaving `a` inside `self`.
     #[pure]
-    #[requires(self@ == a.op(*b))]
+    #[requires(self@ == a.op(*b) && a.compatible(*b))]
     #[ensures((^self).id() == self.id())]
     #[ensures(result.id() == self.id())]
     #[ensures((^self)@ == *a)]
@@ -162,7 +161,7 @@ impl<R: RA> Resource<R> {
     #[pure]
     #[requires(self.id() == other.id())]
     #[ensures(result.id() == self.id())]
-    #[ensures(result@ == self@.op(other@))]
+    #[ensures(result@ == self@.op(other@) && self@.compatible(other@))]
     pub fn join(self, other: Self) -> Self {
         panic!("ghost code only")
     }
@@ -171,7 +170,7 @@ impl<R: RA> Resource<R> {
     #[pure]
     #[requires(self.id() == other.id())]
     #[ensures((^self).id() == self.id())]
-    #[ensures((^self)@ == self@.op(other@))]
+    #[ensures((^self)@ == self@.op(other@) && self@.compatible(other@))]
     pub fn join_mut(&mut self, other: Self) {
         let this = std::mem::replace(self, Self::dummy());
         let this = this.join(other);
@@ -216,6 +215,14 @@ impl<R: RA> Resource<R> {
     pub fn update(&mut self, target: Snapshot<R>) {
         panic!("ghost code only")
     }
+
+    /// If we have two disjoint resources, they are always compatible.
+    #[trusted]
+    #[pure]
+    #[requires(self.id() == other.id())]
+    #[ensures(^self == *self)]
+    #[ensures(self@.compatible(other@))]
+    pub fn disjoint_compatible(&mut self, other: &Self) {}
 
     /// Transform `self` into an element in `target`, nondeterministically.
     ///

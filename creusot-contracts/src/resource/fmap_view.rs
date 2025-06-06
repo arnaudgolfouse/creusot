@@ -35,13 +35,12 @@ impl<K, V> ViewRel for MapRelation<K, V> {
     #[logic]
     #[open]
     fn rel(a: Self::Auth, f: Self::Frag) -> bool {
-        f.valid()
-            && pearlite! {
-                forall<k: K> match f.get(k) {
-                    Some(Ag::Ag(v)) => a.get(k) == Some(v),
-                    _ => true,
-                }
+        pearlite! {
+            forall<k: K> match f.get(k) {
+                Some(Ag(v)) => a.get(k) == Some(v),
+                _ => true,
             }
+        }
     }
 
     #[law]
@@ -54,7 +53,7 @@ impl<K, V> ViewRel for MapRelation<K, V> {
             None => {}
             Some(_) => {
                 proof_assert!(forall<k: K> match f2.get(k) {
-                    Some(Ag::Ag(v)) => f1.get(k) == Some(Ag::Ag(v)),
+                    Some(v) => f1.get(k) == Some(v),
                     _ => true,
                 });
             }
@@ -126,8 +125,7 @@ impl<K, V> Authority<K, V> {
     pub fn auth(self) -> FMap<K, V> {
         match self.0.val().auth {
             None => FMap::empty(),
-            Some(Excl::Bot) => FMap::empty(),
-            Some(Excl::Excl(auth)) => auth,
+            Some(Excl(auth)) => auth,
         }
     }
 
@@ -151,7 +149,7 @@ impl<K, V> Authority<K, V> {
         let new_auth = snapshot!(View::mkauth(self.auth().insert(*k, *v)));
         self.0.update(new_auth);
         let right = snapshot!(self.0@);
-        let left = snapshot!(View::mkfrag(FMap::empty().insert(*k, Ag::Ag(*v))));
+        let left = snapshot!(View::mkfrag(FMap::empty().insert(*k, Ag(*v))));
         Fragment(self.0.split_off(right, left))
     }
 
@@ -181,7 +179,7 @@ impl<K, V> Fragment<K, V> {
     #[open(self)]
     pub fn frag(self) -> (K, V) {
         let frag_agree = self.0.val().frag.unwrap_logic();
-        such_that(|(k, v)| frag_agree.get(k) == Some(Ag::Ag(v)))
+        such_that(|(k, v)| frag_agree.get(k) == Some(Ag(v)))
     }
 }
 
