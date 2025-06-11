@@ -26,17 +26,15 @@ use crate::translation::fmir::{Block, FmirVisitor, Place, RValue, Statement, Ter
 ///
 /// This module defines a fMIR transformation which analyzes the body for
 ///
-/// (1) types with invariants being mutated inside of a loop
-/// (2) mutable borrows being mutated inside of a loop.
-
+/// 1. types with invariants being mutated inside of a loop
+/// 2. mutable borrows being mutated inside of a loop.
 pub fn infer_proph_invariants<'tcx>(ctx: &TranslationCtx<'tcx>, body: &mut fmir::Body<'tcx>) {
     let graph = node_graph(body);
 
     let wto = weak_topological_order(&graph, START_BLOCK);
-    let mut backs = IndexMap::new();
-    descendants(&mut backs, &wto);
+    let backs = descendants(&wto);
 
-    let res = borrow_prophecy_analysis(ctx, &body, &wto);
+    let res = borrow_prophecy_analysis(ctx, body, &wto);
 
     let snap_ty = get_snap_ty(ctx.tcx);
     let tcx = ctx.tcx;
@@ -47,7 +45,7 @@ pub fn infer_proph_invariants<'tcx>(ctx: &TranslationCtx<'tcx>, body: &mut fmir:
         for (ix, u) in unchanged.iter().enumerate() {
             let Some(pterm) = place_to_term(u, tcx, &body.locals) else { continue };
 
-            let local = Ident::fresh_local(&format!("old_{}_{ix}", k.as_u32()));
+            let local = Ident::fresh_local(format!("old_{}_{ix}", k.as_u32()));
             let subst = ctx.mk_args(&[u.ty(tcx, &body.locals).into()]);
             let ty = Ty::new_adt(ctx.tcx, ctx.adt_def(snap_ty), subst);
 
@@ -70,7 +68,8 @@ pub fn infer_proph_invariants<'tcx>(ctx: &TranslationCtx<'tcx>, body: &mut fmir:
                     }
                     body.blocks.insert(new_block, Block {
                         invariants: vec![],
-                        variant: None,
+                        variants: vec![],
+                        variant_target: None,
                         stmts: vec![],
                         terminator: Terminator::Goto(*k),
                     });
@@ -131,29 +130,31 @@ fn place_to_term<'tcx>(
     Some(t)
 }
 
-fn descendants(
-    e: &mut IndexMap<BasicBlock, IndexSet<BasicBlock>>,
-    comps: &[Component<BasicBlock>],
-) {
-    for comp in comps {
-        match comp {
-            Component::Vertex(_) => (),
-            Component::Component(l, members) => {
-                descendants(e, members);
-                for mem in members {
-                    match mem {
-                        Component::Vertex(b) => {
-                            e.entry(*l).or_default().insert(*b);
-                        }
-                        Component::Component(b, _) => {
-                            let s = e[b].clone();
-                            e.entry(*l).or_default().union(&s);
+fn descendants(comps: &[Component<BasicBlock>]) -> IndexMap<BasicBlock, IndexSet<BasicBlock>> {
+    fn inner(e: &mut IndexMap<BasicBlock, IndexSet<BasicBlock>>, comps: &[Component<BasicBlock>]) {
+        for comp in comps {
+            match comp {
+                Component::Vertex(_) => (),
+                Component::Component(l, members) => {
+                    inner(e, members);
+                    for mem in members {
+                        match mem {
+                            Component::Vertex(b) => {
+                                e.entry(*l).or_default().insert(*b);
+                            }
+                            Component::Component(b, _) => {
+                                let s = e[b].clone();
+                                e.entry(*l).or_default().union(&s);
+                            }
                         }
                     }
                 }
             }
         }
     }
+    let mut result = IndexMap::new();
+    inner(&mut result, comps);
+    result
 }
 
 fn borrow_prophecy_analysis<'tcx>(
@@ -269,7 +270,7 @@ impl<'a, 'tcx> BorrowProph<'a, 'tcx> {
                 locals,
                 active_borrows: Default::default(),
                 overwritten_values: Default::default(),
-                unchanged_prophs: unchanged_prophs,
+                unchanged_prophs,
             }
         }
     }
