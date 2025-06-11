@@ -68,7 +68,7 @@ impl<'a, 'tcx> LocalUsage<'a, 'tcx> {
 
     fn visit_block(&mut self, b: &Block<'tcx>) {
         b.invariants.iter().for_each(|t| self.visit_term(&t.body));
-        b.variant.iter().for_each(|t| self.visit_term(t));
+        b.variants.iter().for_each(|t| self.visit_term(&t.term));
         b.stmts.iter().for_each(|s| self.visit_statement(s));
         self.visit_terminator(&b.terminator);
     }
@@ -231,7 +231,7 @@ struct SimplePropagator<'tcx> {
     dead: HashSet<Ident>,
 }
 
-pub(crate) fn simplify_fmir<'tcx>(usage: HashMap<Ident, Usage>, body: &mut Body) {
+pub(crate) fn simplify_fmir(usage: HashMap<Ident, Usage>, body: &mut Body) {
     SimplePropagator { usage, prop: HashMap::new(), dead: HashSet::new() }.visit_body(body);
 }
 impl<'tcx> SimplePropagator<'tcx> {
@@ -240,7 +240,7 @@ impl<'tcx> SimplePropagator<'tcx> {
             self.visit_block(b)
         }
 
-        b.locals.retain(|l, _| !self.dead.contains(&l) && self.usage.contains_key(&l));
+        b.locals.retain(|l, _| !self.dead.contains(l) && self.usage.contains_key(l));
 
         assert!(self.prop.is_empty(), "some values were not properly propagated {:?}", self.prop)
     }
