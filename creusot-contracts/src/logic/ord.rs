@@ -177,6 +177,36 @@ macro_rules! ord_laws_impl {
 
 pub use ord_laws_impl;
 
+impl<T: OrdLogic> OrdLogic for &T {
+    #[logic]
+    #[open]
+    fn cmp_log(self, o: Self) -> Ordering {
+        T::cmp_log(*self, *o)
+    }
+
+    #[predicate]
+    fn le_log(self, other: Self) -> bool {
+        T::le_log(*self, *other)
+    }
+
+    #[predicate]
+    fn lt_log(self, other: Self) -> bool {
+        T::lt_log(*self, *other)
+    }
+
+    #[predicate]
+    fn ge_log(self, other: Self) -> bool {
+        T::ge_log(*self, *other)
+    }
+
+    #[predicate]
+    fn gt_log(self, other: Self) -> bool {
+        T::gt_log(*self, *other)
+    }
+
+    ord_laws_impl! {}
+}
+
 impl OrdLogic for Int {
     #[logic]
     #[open]
