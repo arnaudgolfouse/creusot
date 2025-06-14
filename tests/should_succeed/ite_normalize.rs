@@ -2,7 +2,7 @@
 
 extern crate creusot_contracts;
 
-use creusot_contracts::{std::clone::Clone, *};
+use creusot_contracts::{logic::Mapping, std::clone::Clone, *};
 
 #[trusted]
 struct BTreeMap<K, V>(std::collections::BTreeMap<K, V>);
@@ -60,9 +60,38 @@ pub enum Expr {
     False,
 }
 
-// FIXME: this should go away, we have not defined any order relation on Expr
-#[trusted]
-impl WellFounded for Expr {}
+#[logic]
+#[ensures(result >= 0)]
+fn expr_to_int(e: Expr) -> Int {
+    match e {
+        Expr::IfThenElse { c, t, e } => {
+            // Let why3 show that this terminates
+            expr_to_int(*c).max(expr_to_int(*t).max(expr_to_int(*e))) + 1
+        }
+        Expr::Var { .. } => 0,
+        Expr::True => 0,
+        Expr::False => 0,
+    }
+}
+
+impl WellFounded for Expr {
+    #[predicate]
+    #[open]
+    fn relation(self, other: Self) -> bool {
+        match self {
+            Self::IfThenElse { c, t, e } => other == *c || other == *t || other == *e,
+            _ => false,
+        }
+    }
+
+    #[logic]
+    #[requires(forall<i: Int> i >= 0 ==> Self::relation(s[i], s[i + 1]))]
+    #[ensures(false)]
+    fn no_infinite_decreasing_sequence(s: Mapping<Int, Self>) {
+        proof_assert!(forall<x: Self, y: Self> Self::relation(x, y) ==> expr_to_int(x) >= expr_to_int(y) + 1);
+        well_founded::well_founded_map_to_nat(|(x, y)| Self::relation(x, y), |x| expr_to_int(x));
+    }
+}
 
 use std::alloc::Allocator;
 extern_spec! {

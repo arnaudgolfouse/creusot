@@ -1,6 +1,6 @@
 module M_ite_normalize__qyi15119799284333837974__clone [#"ite_normalize.rs" 55 9 55 14] (* <Expr as creusot_contracts::Clone> *)
   let%span site_normalize = "ite_normalize.rs" 55 9 55 14
-  let%span site_normalize'0 = "ite_normalize.rs" 72 26 72 41
+  let%span site_normalize'0 = "ite_normalize.rs" 101 26 101 41
   let%span sclone = "../../creusot-contracts/src/std/clone.rs" 15 26 15 41
   
   use creusot.int.UInt64
@@ -89,8 +89,118 @@ module M_ite_normalize__qyi15119799284333837974__clone [#"ite_normalize.rs" 55 9
     | & _19 : UInt64.t = Any.any_l () ]
      [ return''0 (result:t_Expr)-> {[@expl:clone ensures] [%#site_normalize] result = self} (! return' {result}) ] 
 end
-module M_ite_normalize__qyi12210208226808281580__from [#"ite_normalize.rs" 80 4 80 29] (* <Expr as std::convert::From<usize>> *)
-  let%span site_normalize = "ite_normalize.rs" 97 14 97 39
+module M_ite_normalize__expr_to_int [#"ite_normalize.rs" 65 0 65 30]
+  let%span site_normalize = "ite_normalize.rs" 64 10 64 21
+  let%span site_normalize'0 = "ite_normalize.rs" 66 4 74 5
+  
+  use creusot.int.UInt64
+  use mach.int.Int
+  use int.MinMax
+  
+  type t_Expr  =
+    | C_IfThenElse t_Expr t_Expr t_Expr
+    | C_Var UInt64.t
+    | C_True
+    | C_False
+  
+  constant e  : t_Expr
+  
+  function expr_to_int [#"ite_normalize.rs" 65 0 65 30] (e'0 : t_Expr) : int
+  
+  goal vc_expr_to_int : match e with
+    | C_IfThenElse c t e'0 -> ([%#site_normalize] expr_to_int c >= 0)
+     -> ([%#site_normalize] expr_to_int t >= 0)
+     -> ([%#site_normalize] expr_to_int e'0 >= 0)
+     -> ([%#site_normalize] MinMax.max (expr_to_int c) (MinMax.max (expr_to_int t) (expr_to_int e'0)) + 1 >= 0)
+    | C_Var _ -> [%#site_normalize] 0 >= 0
+    | C_True -> [%#site_normalize] 0 >= 0
+    | C_False -> [%#site_normalize] 0 >= 0
+    end
+end
+module M_ite_normalize__qyi1366331390187413022__no_infinite_decreasing_sequence [#"ite_normalize.rs" 90 4 90 61] (* <Expr as creusot_contracts::WellFounded> *)
+  let%span site_normalize = "ite_normalize.rs" 88 15 88 71
+  let%span site_normalize'0 = "ite_normalize.rs" 89 14 89 19
+  let%span site_normalize'1 = "ite_normalize.rs" 64 10 64 21
+  let%span site_normalize'2 = "ite_normalize.rs" 91 22 91 108
+  let%span site_normalize'3 = "ite_normalize.rs" 92 46 92 75
+  let%span site_normalize'4 = "ite_normalize.rs" 92 77 92 95
+  let%span site_normalize'5 = "ite_normalize.rs" 91 8 91 109
+  let%span site_normalize'6 = "ite_normalize.rs" 81 8 84 9
+  let%span site_normalize'7 = "ite_normalize.rs" 66 4 74 5
+  let%span swell_founded = "../../creusot-contracts/src/well_founded.rs" 22 11 22 76
+  let%span swell_founded'0 = "../../creusot-contracts/src/well_founded.rs" 23 10 24 49
+  let%span swell_founded'1 = "../../creusot-contracts/src/well_founded.rs" 39 8 39 33
+  let%span smapping = "../../creusot-contracts/src/logic/mapping.rs" 60 8 60 19
+  
+  use creusot.int.UInt64
+  use map.Map
+  use mach.int.Int
+  use int.MinMax
+  
+  type t_Expr  =
+    | C_IfThenElse t_Expr t_Expr t_Expr
+    | C_Var UInt64.t
+    | C_True
+    | C_False
+  
+  predicate relation [#"ite_normalize.rs" 80 4 80 42] (self : t_Expr) (other : t_Expr) =
+    [%#site_normalize'6] match self with
+      | C_IfThenElse c t e -> other = c \/ other = t \/ other = e
+      | _ -> false
+      end
+  
+  function index_logic (self : Map.map int t_Expr) (a : int) : t_Expr =
+    [%#smapping] Map.get self a
+  
+  function expr_to_int [#"ite_normalize.rs" 65 0 65 30] (e : t_Expr) : int =
+    [%#site_normalize'7] match e with
+      | C_IfThenElse c t e'0 -> MinMax.max (expr_to_int c) (MinMax.max (expr_to_int t) (expr_to_int e'0)) + 1
+      | C_Var _ -> 0
+      | C_True -> 0
+      | C_False -> 0
+      end
+  
+  axiom expr_to_int_spec : forall e : t_Expr . [%#site_normalize'1] expr_to_int e >= 0
+  
+  type tuple  =
+    { _p0: t_Expr; _p1: t_Expr }
+  
+  function index_logic'0 (self : Map.map tuple bool) (a : tuple) : bool =
+    [%#smapping] Map.get self a
+  
+  predicate relation'0 (self : int) (other : int) =
+    [%#swell_founded'1] self >= 0 /\ self > other
+  
+  function index_logic'1 (self : Map.map t_Expr int) (a : t_Expr) : int =
+    [%#smapping] Map.get self a
+  
+  function well_founded_map_to_nat (r : Map.map tuple bool) (m : Map.map t_Expr int) : ()
+  
+  axiom well_founded_map_to_nat_spec : forall r : Map.map tuple bool, m : Map.map t_Expr int . ([%#swell_founded] forall t1 : t_Expr, t2 : t_Expr . index_logic'0 r { _p0 = t1;
+                                                                                                                                                                      _p1 = t2 }
+   -> relation'0 (index_logic'1 m t1) (index_logic'1 m t2))
+   -> ([%#swell_founded'0] not (exists s : Map.map int t_Expr . forall i : int . i >= 0
+   -> index_logic'0 r { _p0 = index_logic s i; _p1 = index_logic s (i + 1) }))
+  
+  constant s  : Map.map int t_Expr
+  
+  function no_infinite_decreasing_sequence [#"ite_normalize.rs" 90 4 90 61] (s'0 : Map.map int t_Expr) : ()
+  
+  goal vc_no_infinite_decreasing_sequence : ([%#site_normalize] forall i : int . i >= 0
+   -> relation (index_logic s i) (index_logic s (i + 1)))
+   -> ([%#site_normalize'2] forall x : t_Expr, y : t_Expr . relation x y  -> expr_to_int x >= expr_to_int y + 1)
+  && (let _ = () in let _ = () in (forall __0 : tuple . let {_p0 = x ; _p1 = y} = __0 in true)
+  /\ ([@expl:well_founded_map_to_nat requires] [%#swell_founded] forall t1 : t_Expr, t2 : t_Expr . index_logic'0 ([%#site_normalize'3] fun (__0 : tuple) -> let {_p0 = x ; _p1 = y} = __0 in relation x y) { _p0 = t1;
+                                                                                                                                                                                                             _p1 = t2 }
+   -> relation'0 (index_logic'1 ([%#site_normalize'4] fun (x : t_Expr) -> expr_to_int x) t1) (index_logic'1 ([%#site_normalize'4] fun (x : t_Expr) -> expr_to_int x) t2))
+  /\ (([%#swell_founded'0] not (exists s'0 : Map.map int t_Expr . forall i : int . i >= 0
+   -> index_logic'0 ([%#site_normalize'3] fun (__0 : tuple) -> let {_p0 = x ; _p1 = y} = __0 in relation x y) { _p0 = index_logic s'0 i;
+                                                                                                                _p1 = index_logic s'0 (i
+                                                                                                                + 1) }))
+   -> (let _ = well_founded_map_to_nat ([%#site_normalize'3] fun (__0 : tuple) -> let {_p0 = x ; _p1 = y} = __0 in relation x y) ([%#site_normalize'4] fun (x : t_Expr) -> expr_to_int x) in [%#site_normalize'0] false)))
+end
+module M_ite_normalize__qyi12210208226808281580__from [#"ite_normalize.rs" 109 4 109 29] (* <Expr as std::convert::From<usize>> *)
+  let%span site_normalize = "ite_normalize.rs" 126 14 126 39
   
   use creusot.int.UInt64
   use creusot.prelude.Any
@@ -107,11 +217,11 @@ module M_ite_normalize__qyi12210208226808281580__from [#"ite_normalize.rs" 80 4 
   
   meta "compute_max_steps" 1000000
   
-  let rec from[#"ite_normalize.rs" 80 4 80 29] (a:UInt64.t) (return'  (x:t_Expr))= (! bb0
+  let rec from[#"ite_normalize.rs" 109 4 109 29] (a:UInt64.t) (return'  (x:t_Expr))= (! bb0
     [ bb0 = s0 [ s0 = variable {a'0} (fun (_ret:t_Expr) ->  [ &_0 <- _ret ] s1) | s1 = bb1 ]  | bb1 = return''0 {_0} ]
     ) [ & _0 : t_Expr = Any.any_l () | & a'0 : UInt64.t = a ]  [ return''0 (result:t_Expr)-> (! return' {result}) ] 
 end
-module M_ite_normalize__qyi1874907776010341903__from [#"ite_normalize.rs" 86 4 86 28] (* <Expr as std::convert::From<bool>> *)
+module M_ite_normalize__qyi1874907776010341903__from [#"ite_normalize.rs" 115 4 115 28] (* <Expr as std::convert::From<bool>> *)
   use creusot.int.UInt64
   use creusot.prelude.Any
   
@@ -123,15 +233,15 @@ module M_ite_normalize__qyi1874907776010341903__from [#"ite_normalize.rs" 86 4 8
   
   meta "compute_max_steps" 1000000
   
-  let rec from[#"ite_normalize.rs" 86 4 86 28] (b:bool) (return'  (x:t_Expr))= (! bb0
+  let rec from[#"ite_normalize.rs" 115 4 115 28] (b:bool) (return'  (x:t_Expr))= (! bb0
     [ bb0 = any [ br0 -> {b'0 = false} (! bb2) | br1 -> {b'0} (! bb1) ] 
     | bb1 = s0 [ s0 =  [ &_0 <- C_True ] s1 | s1 = bb3 ] 
     | bb2 = s0 [ s0 =  [ &_0 <- C_False ] s1 | s1 = bb3 ] 
     | bb3 = return''0 {_0} ]
     ) [ & _0 : t_Expr = Any.any_l () | & b'0 : bool = b ]  [ return''0 (result:t_Expr)-> (! return' {result}) ] 
 end
-module M_ite_normalize__qyi17570407315987535457__ite [#"ite_normalize.rs" 93 4 93 49] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 92 14 92 91
+module M_ite_normalize__qyi17570407315987535457__ite [#"ite_normalize.rs" 122 4 122 49] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 121 14 121 91
   
   use creusot.int.UInt64
   use creusot.prelude.Any
@@ -144,7 +254,7 @@ module M_ite_normalize__qyi17570407315987535457__ite [#"ite_normalize.rs" 93 4 9
   
   meta "compute_max_steps" 1000000
   
-  let rec ite[#"ite_normalize.rs" 93 4 93 49] (c:t_Expr) (t:t_Expr) (e:t_Expr) (return'  (x:t_Expr))= (! bb0
+  let rec ite[#"ite_normalize.rs" 122 4 122 49] (c:t_Expr) (t:t_Expr) (e:t_Expr) (return'  (x:t_Expr))= (! bb0
     [ bb0 = bb1
     | bb1 = bb2
     | bb2 = bb3
@@ -161,8 +271,8 @@ module M_ite_normalize__qyi17570407315987535457__ite [#"ite_normalize.rs" 93 4 9
       (! return' {result}) ]
 
 end
-module M_ite_normalize__qyi17570407315987535457__variable [#"ite_normalize.rs" 98 4 98 37] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 97 14 97 39
+module M_ite_normalize__qyi17570407315987535457__variable [#"ite_normalize.rs" 127 4 127 37] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 126 14 126 39
   
   use creusot.int.UInt64
   use creusot.prelude.Any
@@ -175,20 +285,20 @@ module M_ite_normalize__qyi17570407315987535457__variable [#"ite_normalize.rs" 9
   
   meta "compute_max_steps" 1000000
   
-  let rec variable[#"ite_normalize.rs" 98 4 98 37] (v:UInt64.t) (return'  (x:t_Expr))= (! bb0
+  let rec variable[#"ite_normalize.rs" 127 4 127 37] (v:UInt64.t) (return'  (x:t_Expr))= (! bb0
     [ bb0 = s0 [ s0 =  [ &_0 <- C_Var v'0 ] s1 | s1 = return''0 {_0} ]  ]
     ) [ & _0 : t_Expr = Any.any_l () | & v'0 : UInt64.t = v ] 
     [ return''0 (result:t_Expr)-> {[@expl:variable ensures] [%#site_normalize] result = C_Var v} (! return' {result}) ]
 
 end
-module M_ite_normalize__qyi17570407315987535457__transpose [#"ite_normalize.rs" 107 4 107 52] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 102 15 102 35
-  let%span site_normalize'0 = "ite_normalize.rs" 103 15 103 32
-  let%span site_normalize'1 = "ite_normalize.rs" 104 15 104 32
-  let%span site_normalize'2 = "ite_normalize.rs" 105 14 105 36
-  let%span site_normalize'3 = "ite_normalize.rs" 106 14 106 18
+module M_ite_normalize__qyi17570407315987535457__transpose [#"ite_normalize.rs" 136 4 136 52] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 131 15 131 35
+  let%span site_normalize'0 = "ite_normalize.rs" 132 15 132 32
+  let%span site_normalize'1 = "ite_normalize.rs" 133 15 133 32
+  let%span site_normalize'2 = "ite_normalize.rs" 134 14 134 36
+  let%span site_normalize'3 = "ite_normalize.rs" 135 14 135 18
   let%span site_normalize'4 = "ite_normalize.rs" 55 9 55 14
-  let%span site_normalize'5 = "ite_normalize.rs" 124 8 137 9
+  let%span site_normalize'5 = "ite_normalize.rs" 153 8 166 9
   
   use creusot.int.UInt64
   use creusot.prelude.Any
@@ -210,7 +320,7 @@ module M_ite_normalize__qyi17570407315987535457__transpose [#"ite_normalize.rs" 
     [ return''0 (result:t_Expr)-> {[%#site_normalize'4] result = self} (! return' {result}) ]
   
   
-  predicate is_normalized [#"ite_normalize.rs" 123 4 123 34] (self : t_Expr) =
+  predicate is_normalized [#"ite_normalize.rs" 152 4 152 34] (self : t_Expr) =
     [%#site_normalize'5] match self with
       | C_IfThenElse c t e -> is_normalized c
       /\ is_normalized t
@@ -226,7 +336,7 @@ module M_ite_normalize__qyi17570407315987535457__transpose [#"ite_normalize.rs" 
   
   meta "compute_max_steps" 1000000
   
-  let rec transpose[#"ite_normalize.rs" 107 4 107 52] (self:t_Expr) (a:t_Expr) (b:t_Expr) (return'  (x:t_Expr))= {[@expl:transpose requires #0] [%#site_normalize] is_normalized self}
+  let rec transpose[#"ite_normalize.rs" 136 4 136 52] (self:t_Expr) (a:t_Expr) (b:t_Expr) (return'  (x:t_Expr))= {[@expl:transpose requires #0] [%#site_normalize] is_normalized self}
     {[@expl:transpose requires #1] [%#site_normalize'0] is_normalized a}
     {[@expl:transpose requires #2] [%#site_normalize'1] is_normalized b}
     (! bb0
@@ -292,16 +402,16 @@ module M_ite_normalize__qyi17570407315987535457__transpose [#"ite_normalize.rs" 
       (! return' {result}) ]
 
 end
-module M_ite_normalize__qyi17570407315987535457__normalize [#"ite_normalize.rs" 142 4 142 35] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 140 14 140 36
-  let%span site_normalize'0 = "ite_normalize.rs" 141 14 141 18
+module M_ite_normalize__qyi17570407315987535457__normalize [#"ite_normalize.rs" 171 4 171 35] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 169 14 169 36
+  let%span site_normalize'0 = "ite_normalize.rs" 170 14 170 18
   let%span site_normalize'1 = "ite_normalize.rs" 55 9 55 14
-  let%span site_normalize'2 = "ite_normalize.rs" 102 15 102 35
-  let%span site_normalize'3 = "ite_normalize.rs" 103 15 103 32
-  let%span site_normalize'4 = "ite_normalize.rs" 104 15 104 32
-  let%span site_normalize'5 = "ite_normalize.rs" 105 14 105 36
-  let%span site_normalize'6 = "ite_normalize.rs" 106 14 106 18
-  let%span site_normalize'7 = "ite_normalize.rs" 124 8 137 9
+  let%span site_normalize'2 = "ite_normalize.rs" 131 15 131 35
+  let%span site_normalize'3 = "ite_normalize.rs" 132 15 132 32
+  let%span site_normalize'4 = "ite_normalize.rs" 133 15 133 32
+  let%span site_normalize'5 = "ite_normalize.rs" 134 14 134 36
+  let%span site_normalize'6 = "ite_normalize.rs" 135 14 135 18
+  let%span site_normalize'7 = "ite_normalize.rs" 153 8 166 9
   
   use creusot.int.UInt64
   use creusot.prelude.Any
@@ -323,7 +433,7 @@ module M_ite_normalize__qyi17570407315987535457__normalize [#"ite_normalize.rs" 
       any) ]
   
   
-  predicate is_normalized [#"ite_normalize.rs" 123 4 123 34] (self : t_Expr) =
+  predicate is_normalized [#"ite_normalize.rs" 152 4 152 34] (self : t_Expr) =
     [%#site_normalize'7] match self with
       | C_IfThenElse c t e -> is_normalized c
       /\ is_normalized t
@@ -344,7 +454,7 @@ module M_ite_normalize__qyi17570407315987535457__normalize [#"ite_normalize.rs" 
   
   meta "compute_max_steps" 1000000
   
-  let rec normalize[#"ite_normalize.rs" 142 4 142 35] (self:t_Expr) (return'  (x:t_Expr))= (! bb0
+  let rec normalize[#"ite_normalize.rs" 171 4 171 35] (self:t_Expr) (return'  (x:t_Expr))= (! bb0
     [ bb0 = any
       [ br0 (x0:t_Expr) (x1:t_Expr) (x2:t_Expr)-> {self'0 = C_IfThenElse x0 x1 x2} (! bb2)
       | br1 (x0:UInt64.t)-> {self'0 = C_Var x0} (! bb1)
@@ -386,16 +496,16 @@ module M_ite_normalize__qyi17570407315987535457__normalize [#"ite_normalize.rs" 
       (! return' {result}) ]
 
 end
-module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 178 4 178 33] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 176 15 176 35
-  let%span site_normalize'0 = "ite_normalize.rs" 177 14 177 36
-  let%span site_normalize'1 = "ite_normalize.rs" 182 15 182 35
-  let%span site_normalize'2 = "ite_normalize.rs" 183 14 183 105
-  let%span site_normalize'3 = "ite_normalize.rs" 184 14 184 36
-  let%span site_normalize'4 = "ite_normalize.rs" 185 14 185 18
-  let%span site_normalize'5 = "ite_normalize.rs" 124 8 137 9
-  let%span site_normalize'6 = "ite_normalize.rs" 156 8 162 9
-  let%span site_normalize'7 = "ite_normalize.rs" 167 8 173 9
+module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 207 4 207 33] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 205 15 205 35
+  let%span site_normalize'0 = "ite_normalize.rs" 206 14 206 36
+  let%span site_normalize'1 = "ite_normalize.rs" 211 15 211 35
+  let%span site_normalize'2 = "ite_normalize.rs" 212 14 212 105
+  let%span site_normalize'3 = "ite_normalize.rs" 213 14 213 36
+  let%span site_normalize'4 = "ite_normalize.rs" 214 14 214 18
+  let%span site_normalize'5 = "ite_normalize.rs" 153 8 166 9
+  let%span site_normalize'6 = "ite_normalize.rs" 185 8 191 9
+  let%span site_normalize'7 = "ite_normalize.rs" 196 8 202 9
   
   use creusot.int.UInt64
   use map.Map
@@ -411,7 +521,7 @@ module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 1
     | C_True
     | C_False
   
-  predicate is_normalized [#"ite_normalize.rs" 123 4 123 34] (self : t_Expr) =
+  predicate is_normalized [#"ite_normalize.rs" 152 4 152 34] (self : t_Expr) =
     [%#site_normalize'5] match self with
       | C_IfThenElse c t e -> is_normalized c
       /\ is_normalized t
@@ -431,14 +541,14 @@ module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 1
   
   function view [#"ite_normalize.rs" 50 4 50 33] (self : t_BTreeMap) : Map.map int t_Option
   
-  predicate does_not_contain [#"ite_normalize.rs" 166 4 166 48] (self : t_Expr) (vp : UInt64.t) =
+  predicate does_not_contain [#"ite_normalize.rs" 195 4 195 48] (self : t_Expr) (vp : UInt64.t) =
     [%#site_normalize'7] match self with
       | C_IfThenElse c t e -> does_not_contain c vp /\ does_not_contain t vp /\ does_not_contain e vp
       | C_Var v -> v <> vp
       | _ -> true
       end
   
-  predicate is_simplified [#"ite_normalize.rs" 155 4 155 34] (self : t_Expr) =
+  predicate is_simplified [#"ite_normalize.rs" 184 4 184 34] (self : t_Expr) =
     [%#site_normalize'6] match self with
       | C_IfThenElse c t e -> match c with
         | C_Var v -> does_not_contain t v /\ does_not_contain e v
@@ -457,7 +567,7 @@ module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 1
   
   meta "compute_max_steps" 1000000
   
-  let rec simplify[#"ite_normalize.rs" 178 4 178 33] (self:t_Expr) (return'  (x:t_Expr))= {[@expl:simplify requires] [%#site_normalize] is_normalized self}
+  let rec simplify[#"ite_normalize.rs" 207 4 207 33] (self:t_Expr) (return'  (x:t_Expr))= {[@expl:simplify requires] [%#site_normalize] is_normalized self}
     (! bb0
     [ bb0 = bb1
     | bb1 = s0 [ s0 = new (fun (_ret:t_BTreeMap) ->  [ &_5 <- _ret ] s1) | s1 = bb2 ] 
@@ -469,20 +579,20 @@ module M_ite_normalize__qyi17570407315987535457__simplify [#"ite_normalize.rs" 1
       (! return' {result}) ]
 
 end
-module M_ite_normalize__qyi17570407315987535457__simplify_helper [#"ite_normalize.rs" 186 4 186 66] (* Expr *)
-  let%span site_normalize = "ite_normalize.rs" 196 46 196 50
-  let%span site_normalize'0 = "ite_normalize.rs" 201 46 201 51
-  let%span site_normalize'1 = "ite_normalize.rs" 182 15 182 35
-  let%span site_normalize'2 = "ite_normalize.rs" 183 14 183 105
-  let%span site_normalize'3 = "ite_normalize.rs" 184 14 184 36
-  let%span site_normalize'4 = "ite_normalize.rs" 185 14 185 18
+module M_ite_normalize__qyi17570407315987535457__simplify_helper [#"ite_normalize.rs" 215 4 215 66] (* Expr *)
+  let%span site_normalize = "ite_normalize.rs" 225 46 225 50
+  let%span site_normalize'0 = "ite_normalize.rs" 230 46 230 51
+  let%span site_normalize'1 = "ite_normalize.rs" 211 15 211 35
+  let%span site_normalize'2 = "ite_normalize.rs" 212 14 212 105
+  let%span site_normalize'3 = "ite_normalize.rs" 213 14 213 36
+  let%span site_normalize'4 = "ite_normalize.rs" 214 14 214 18
   let%span site_normalize'5 = "ite_normalize.rs" 17 14 17 68
   let%span site_normalize'6 = "ite_normalize.rs" 18 14 18 89
   let%span site_normalize'7 = "ite_normalize.rs" 38 14 38 29
   let%span site_normalize'8 = "ite_normalize.rs" 27 14 27 123
-  let%span site_normalize'9 = "ite_normalize.rs" 124 8 137 9
-  let%span site_normalize'10 = "ite_normalize.rs" 167 8 173 9
-  let%span site_normalize'11 = "ite_normalize.rs" 156 8 162 9
+  let%span site_normalize'9 = "ite_normalize.rs" 153 8 166 9
+  let%span site_normalize'10 = "ite_normalize.rs" 196 8 202 9
+  let%span site_normalize'11 = "ite_normalize.rs" 185 8 191 9
   let%span smodel = "../../creusot-contracts/src/model.rs" 54 8 54 22
   let%span smodel'0 = "../../creusot-contracts/src/model.rs" 45 8 45 28
   let%span smodel'1 = "../../creusot-contracts/src/model.rs" 72 8 72 22
@@ -558,7 +668,7 @@ module M_ite_normalize__qyi17570407315987535457__simplify_helper [#"ite_normaliz
       (! return' {result}) ]
   
   
-  predicate is_normalized [#"ite_normalize.rs" 123 4 123 34] (self : t_Expr) =
+  predicate is_normalized [#"ite_normalize.rs" 152 4 152 34] (self : t_Expr) =
     [%#site_normalize'9] match self with
       | C_IfThenElse c t e -> is_normalized c
       /\ is_normalized t
@@ -572,14 +682,14 @@ module M_ite_normalize__qyi17570407315987535457__simplify_helper [#"ite_normaliz
       | C_False -> true
       end
   
-  predicate does_not_contain [#"ite_normalize.rs" 166 4 166 48] (self : t_Expr) (vp : UInt64.t) =
+  predicate does_not_contain [#"ite_normalize.rs" 195 4 195 48] (self : t_Expr) (vp : UInt64.t) =
     [%#site_normalize'10] match self with
       | C_IfThenElse c t e -> does_not_contain c vp /\ does_not_contain t vp /\ does_not_contain e vp
       | C_Var v -> v <> vp
       | _ -> true
       end
   
-  predicate is_simplified [#"ite_normalize.rs" 155 4 155 34] (self : t_Expr) =
+  predicate is_simplified [#"ite_normalize.rs" 184 4 184 34] (self : t_Expr) =
     [%#site_normalize'11] match self with
       | C_IfThenElse c t e -> match c with
         | C_Var v -> does_not_contain t v /\ does_not_contain e v
@@ -590,7 +700,7 @@ module M_ite_normalize__qyi17570407315987535457__simplify_helper [#"ite_normaliz
   
   meta "compute_max_steps" 1000000
   
-  let rec simplify_helper[#"ite_normalize.rs" 186 4 186 66] (self:t_Expr) (state:t_BTreeMap) (return'  (x:t_Expr))= {[@expl:simplify_helper requires] [%#site_normalize'1] is_normalized self}
+  let rec simplify_helper[#"ite_normalize.rs" 215 4 215 66] (self:t_Expr) (state:t_BTreeMap) (return'  (x:t_Expr))= {[@expl:simplify_helper requires] [%#site_normalize'1] is_normalized self}
     (! bb0
     [ bb0 = bb1
     | bb1 = bb2
@@ -744,4 +854,32 @@ module M_ite_normalize__qyi15119799284333837974__clone__refines [#"ite_normalize
     | C_False
   
   goal refines : [%#site_normalize] forall self_ : t_Expr . forall result : t_Expr . result = self_  -> result = self_
+end
+module M_ite_normalize__qyi1366331390187413022__no_infinite_decreasing_sequence__refines [#"ite_normalize.rs" 90 4 90 61] (* <Expr as creusot_contracts::WellFounded> *)
+  let%span site_normalize = "ite_normalize.rs" 90 4 90 61
+  let%span site_normalize'0 = "ite_normalize.rs" 81 8 84 9
+  let%span smapping = "../../creusot-contracts/src/logic/mapping.rs" 60 8 60 19
+  
+  use mach.int.Int
+  use creusot.int.UInt64
+  use map.Map
+  
+  type t_Expr  =
+    | C_IfThenElse t_Expr t_Expr t_Expr
+    | C_Var UInt64.t
+    | C_True
+    | C_False
+  
+  predicate relation [#"ite_normalize.rs" 80 4 80 42] (self : t_Expr) (other : t_Expr) =
+    [%#site_normalize'0] match self with
+      | C_IfThenElse c t e -> other = c \/ other = t \/ other = e
+      | _ -> false
+      end
+  
+  function index_logic (self : Map.map int t_Expr) (a : int) : t_Expr =
+    [%#smapping] Map.get self a
+  
+  goal refines : [%#site_normalize] forall s : Map.map int t_Expr . (forall i : int . i >= 0
+   -> relation (index_logic s i) (index_logic s (i + 1)))
+   -> (forall i : int . i >= 0  -> relation (index_logic s i) (index_logic s (i + 1)))
 end

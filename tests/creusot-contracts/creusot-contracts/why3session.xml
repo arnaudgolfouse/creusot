@@ -844,6 +844,16 @@
  <proof prover="3"><result status="valid" time="0.023676" steps="23"/></proof>
  </goal>
 </theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_le_log__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.015296" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_le_log" proved="true">
+ <goal name="vc_cmp_le_log" proved="true">
+ <proof prover="3"><result status="valid" time="0.022763" steps="4"/></proof>
+ </goal>
+</theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_le_log__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="3" timelimit="5"><result status="valid" time="0.016435" steps="0"/></proof>
@@ -1022,6 +1032,16 @@
 <theory name="M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_lt_log" proved="true">
  <goal name="vc_cmp_lt_log" proved="true">
  <proof prover="3"><result status="valid" time="0.020765" steps="23"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_lt_log__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.016916" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_lt_log" proved="true">
+ <goal name="vc_cmp_lt_log" proved="true">
+ <proof prover="3"><result status="valid" time="0.021278" steps="4"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_lt_log__refines" proved="true">
@@ -1204,6 +1224,16 @@
  <proof prover="3"><result status="valid" time="0.011428" steps="22"/></proof>
  </goal>
 </theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_ge_log__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.018155" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_ge_log" proved="true">
+ <goal name="vc_cmp_ge_log" proved="true">
+ <proof prover="3"><result status="valid" time="0.020779" steps="4"/></proof>
+ </goal>
+</theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_ge_log__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="3" timelimit="5"><result status="valid" time="0.019910" steps="0"/></proof>
@@ -1382,6 +1412,16 @@
 <theory name="M_creusot_contracts__logic__ord__qyi2565746305859701215__cmp_gt_log" proved="true">
  <goal name="vc_cmp_gt_log" proved="true">
  <proof prover="3"><result status="valid" time="0.013816" steps="23"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_gt_log__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.017055" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__cmp_gt_log" proved="true">
+ <goal name="vc_cmp_gt_log" proved="true">
+ <proof prover="3"><result status="valid" time="0.014794" steps="4"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__cmp_gt_log__refines" proved="true">
@@ -1564,6 +1604,16 @@
  <proof prover="3"><result status="valid" time="0.019377" steps="2"/></proof>
  </goal>
 </theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__refl__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.020463" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__refl" proved="true">
+ <goal name="vc_refl" proved="true">
+ <proof prover="3"><result status="valid" time="0.014882" steps="3"/></proof>
+ </goal>
+</theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__refl__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="3" timelimit="5"><result status="valid" time="0.018543" steps="0"/></proof>
@@ -1742,6 +1792,16 @@
 <theory name="M_creusot_contracts__logic__ord__qyi2565746305859701215__trans" proved="true">
  <goal name="vc_trans" proved="true">
  <proof prover="3"><result status="valid" time="0.027312" steps="50"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__trans__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.012851" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__trans" proved="true">
+ <goal name="vc_trans" proved="true">
+ <proof prover="3"><result status="valid" time="0.013723" steps="9"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__trans__refines" proved="true">
@@ -1924,6 +1984,16 @@
  <proof prover="3"><result status="valid" time="0.022480" steps="14"/></proof>
  </goal>
 </theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__antisym1__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.011040" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__antisym1" proved="true">
+ <goal name="vc_antisym1" proved="true">
+ <proof prover="3"><result status="valid" time="0.015255" steps="5"/></proof>
+ </goal>
+</theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym1__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="0"><result status="valid" time="0.020200" steps="495"/></proof>
@@ -2104,6 +2174,16 @@
  <proof prover="3"><result status="valid" time="0.024455" steps="20"/></proof>
  </goal>
 </theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__antisym2__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.018777" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__antisym2" proved="true">
+ <goal name="vc_antisym2" proved="true">
+ <proof prover="3"><result status="valid" time="0.014080" steps="5"/></proof>
+ </goal>
+</theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__antisym2__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="2"><result status="valid" time="0.018948" steps="921"/></proof>
@@ -2282,6 +2362,16 @@
 <theory name="M_creusot_contracts__logic__ord__qyi2565746305859701215__eq_cmp" proved="true">
  <goal name="vc_eq_cmp" proved="true">
  <proof prover="3"><result status="valid" time="0.014572" steps="10"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__eq_cmp__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.019238" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__logic__ord__qyi2486556465392689020__eq_cmp" proved="true">
+ <goal name="vc_eq_cmp" proved="true">
+ <proof prover="3"><result status="valid" time="0.015237" steps="8"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__logic__ord__qyi2364657485180829964__eq_cmp__refines" proved="true">
@@ -3757,6 +3847,146 @@
 <theory name="M_creusot_contracts__snapshot__qyi17576604998327728858__clone__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="3"><result status="valid" time="0.027262" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__well_founded_map_to_nat" proved="true">
+ <goal name="vc_well_founded_map_to_nat" proved="true">
+ <proof prover="3"><result status="valid" time="0.156240" steps="1154"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9310745643810688590__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.012281" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9638351460870142599__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.010137" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9638351460870142599__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.040898" steps="196"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9609909904270418013__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.020316" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9609909904270418013__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.035540" steps="228"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9403382943699858826__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.012118" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi9403382943699858826__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.042720" steps="228"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi8603373305131464426__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.011814" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi8603373305131464426__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.054327" steps="272"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi6347394689205276921__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.016614" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi6347394689205276921__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.037902" steps="196"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi5625578033759360989__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.014358" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi5625578033759360989__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.035101" steps="228"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi5144186910077244316__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.019005" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi5144186910077244316__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.042439" steps="196"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi3202706400091273105__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.017956" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi3202706400091273105__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.040532" steps="196"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi15923855770017652186__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.013370" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi15923855770017652186__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.040032" steps="228"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi15465756156088115448__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.012714" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi15465756156088115448__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.048046" steps="230"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi14438938773511278076__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.010330" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi14438938773511278076__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.031730" steps="230"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi13433421712097793401__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.011207" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi13433421712097793401__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.028812" steps="261"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi16622163168856812182__no_infinite_decreasing_sequence__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="3"><result status="valid" time="0.011022" steps="0"/></proof>
+ </goal>
+</theory>
+<theory name="M_creusot_contracts__well_founded__qyi16622163168856812182__no_infinite_decreasing_sequence" proved="true">
+ <goal name="vc_no_infinite_decreasing_sequence" proved="true">
+ <proof prover="3"><result status="valid" time="0.014698" steps="0"/></proof>
  </goal>
 </theory>
 <theory name="M_creusot_contracts__logic__int__qyi3540547019284611154__clone__refines" proved="true">
