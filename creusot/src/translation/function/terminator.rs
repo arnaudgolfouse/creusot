@@ -195,7 +195,13 @@ impl<'tcx> BodyTranslator<'_, 'tcx> {
                             unreachable!("assertion contains something other than local")
                         }
                     }
-                    Operand::Constant(_) => todo!(),
+                    Operand::Constant(constant) => {
+                        if constant.const_.try_to_bool().expect("assertion is not a boolean") {
+                            Term::true_(self.tcx()).span(span)
+                        } else {
+                            Term::false_(self.tcx()).span(span)
+                        }
+                    }
                 };
                 if !expected {
                     cond = Term {
