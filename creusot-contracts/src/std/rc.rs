@@ -1,7 +1,28 @@
-use crate::prelude::*;
+use crate::{prelude::*, std::ptr::PointerExt as _};
 #[cfg(feature = "nightly")]
 use std::alloc::Allocator;
 use std::{ops::Deref, rc::Rc};
+
+/// Extension trait for [`Rc`].
+pub trait RcExt {
+    /// The `T` in `Rc<T>`
+    type Pointee: ?Sized;
+
+    /// Get the underlying raw pointer, in logic.
+    ///
+    /// Used to specify [`Rc::as_ptr`].
+    #[logic]
+    fn as_ptr_logic(self) -> *const Self::Pointee;
+}
+
+#[cfg(feature = "nightly")]
+impl<T: ?Sized, A: Allocator> RcExt for Rc<T, A> {
+    type Pointee = T;
+    #[logic(opaque)]
+    fn as_ptr_logic(self) -> *const T {
+        dead
+    }
+}
 
 #[cfg(feature = "nightly")]
 impl<T: DeepModel + ?Sized, A: Allocator> DeepModel for Rc<T, A> {
@@ -34,6 +55,16 @@ extern_spec! {
                 #[check(ghost)]
                 #[ensures(*result == *(*self)@)]
                 fn as_ref(&self) -> &T;
+
+                #[check(ghost)]
+                #[ensures(result == self.as_ptr_logic())]
+                #[ensures(!result.is_null_logic())]
+                fn as_ptr(&self) -> *const T;
+
+                #[check(terminates)] // Not ghost, as this would allow deducing that there is a finite number of possible `Rc`s.
+                #[ensures(result == (this.as_ptr_logic().deep_model() == other.as_ptr_logic().deep_model()))]
+                #[ensures(result ==> this@ == other@)]
+                fn ptr_eq(this: &Rc<T, A>, other: &Rc<T, A>) -> bool;
             }
         }
     }
