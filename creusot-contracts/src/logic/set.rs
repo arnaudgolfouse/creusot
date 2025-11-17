@@ -78,10 +78,19 @@ impl<T: ?Sized> Set<T> {
 
     /// Returns a new set, which is the union of `self` and `other`.
     ///
-    /// An element is in the result if it is in `self` _or_ if it is in `other`.
+    /// An element is in the result if it is in `self` _or_ in `other`.
     #[logic]
     #[builtin("set.Set.union")]
     pub fn union(self, _: Self) -> Self {
+        dead
+    }
+
+    /// Returns a new set, which is the intersection of `self` and `other`.
+    ///
+    /// And element is in the result if it is in `self` _and_ in `other`.
+    #[logic]
+    #[builtin("set.Set.inter")]
+    pub fn intersect(self, _: Self) -> Self {
         dead
     }
 }
