@@ -113,6 +113,9 @@ impl Args {
         if self.dry_run {
             println!("cp {} {}", src.display(), dst.display());
         } else {
+            // Remove dst first in case it is a (possibly broken) symlink;
+            // fs::copy would otherwise follow the symlink and fail.
+            let _ = fs::remove_file(dst);
             fs::copy(src, dst)?;
         }
         Ok(())
