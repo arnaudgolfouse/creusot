@@ -177,7 +177,7 @@ impl LogicInput {
                 if doc::is_opaque(&log_item.attrs) {
                     doc::LogicBody::Opaque
                 } else {
-                    doc::LogicBody::Some(log_item.body.to_token_stream().into())
+                    doc::LogicBody::term(0, log_item.body.to_token_stream().into())
                 }
             }
             LogicInput::Sig(_) => doc::LogicBody::None,
