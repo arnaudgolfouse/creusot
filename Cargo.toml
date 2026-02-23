@@ -31,3 +31,6 @@ split-debuginfo = "off"
 [workspace.metadata.release]
 shared-version = true
 tag-name = "v{{version}}"
+
+[workspace.metadata.creusot]
+default-members = ["creusot-std"]

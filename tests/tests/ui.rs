@@ -254,11 +254,15 @@ fn build_creusot_std(
     } else {
         build.arg("--span-mode=off");
     }
-    build.args(["--no-check-version", "--stdout", "--spans-relative-to=tests/creusot-std"]);
+    build.args([
+        "--package",
+        "creusot-std",
+        "--no-check-version",
+        "--stdout",
+        "--spans-relative-to=tests/creusot-std",
+    ]);
     build.arg("--creusot-rustc").arg(&paths.creusot_rustc);
-    build
-        .args(["--", "--package", "creusot-std", "--quiet", "-Fsc-drf"])
-        .env("CREUSOT_CONTINUE", "true");
+    build.args(["--", "--quiet", "-Fsc-drf"]).env("CREUSOT_CONTINUE", "true");
     if matches!(erasure_check, ErasureCheck::Warn | ErasureCheck::Error) {
         build.arg("-Zbuild-std=core,std");
     }
