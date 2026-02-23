@@ -21,7 +21,8 @@ use syn::{
 };
 
 pub fn requires(attr: TS1, tokens: TS1) -> TS1 {
-    let documentation = document_spec("requires", doc::LogicBody::Some(attr.clone()));
+    const REQUIRES_LEN: usize = "#[requires(".len();
+    let documentation = document_spec("requires", doc::LogicBody::term(REQUIRES_LEN, attr.clone()));
 
     let mut item = parse_macro_input!(tokens as ContractSubject);
     let term = parse_macro_input!(attr as Term);
@@ -72,7 +73,8 @@ pub fn requires(attr: TS1, tokens: TS1) -> TS1 {
 }
 
 pub fn ensures(attr: TS1, tokens: TS1) -> TS1 {
-    let documentation = document_spec("ensures", doc::LogicBody::Some(attr.clone()));
+    const ENSURES_LEN: usize = "#[ensures(".len();
+    let documentation = document_spec("ensures", doc::LogicBody::term(ENSURES_LEN, attr.clone()));
 
     let mut item = parse_macro_input!(tokens as ContractSubject);
     let term = parse_macro_input!(attr as Term);

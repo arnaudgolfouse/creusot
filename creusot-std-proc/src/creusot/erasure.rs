@@ -67,7 +67,7 @@ enum ErasureArg {
 /// fn bar(arg: T) { /* ... */ }
 /// ```
 pub(crate) fn erasure(arg: TS1, item: TS1) -> TS1 {
-    let doc = doc::document_spec("erasure", doc::LogicBody::Some(arg.clone()));
+    let doc = doc::document_spec("erasure", doc::LogicBody::term(0, arg.clone()));
     let erasure_arg = parse_macro_input!(arg as ErasureArg);
     let mut item = parse_macro_input!(item as FnOrMethod);
     if let ErasureArg::Arg { private, path } = erasure_arg {

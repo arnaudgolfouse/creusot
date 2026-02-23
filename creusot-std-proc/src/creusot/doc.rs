@@ -1,4 +1,4 @@
-use proc_macro::TokenStream as TS1;
+use proc_macro::{Delimiter, Span, TokenStream as TS1, TokenTree};
 use proc_macro2::TokenStream;
 use syn::{
     Attribute, Expr, GenericArgument, Generics, Ident, Lifetime, Path, PathArguments, QSelf,
@@ -8,7 +8,7 @@ use syn::{
 /// The body of a logical function or a spec.
 #[derive(Debug)]
 pub(crate) enum LogicBody {
-    Some(TS1),
+    Some(String),
     /// The function does not have a body. For example, if it is a trait function.
     None,
     /// The function has a body, but it is ignored because the function is `opaque`
@@ -27,7 +27,7 @@ pub(crate) fn document_spec(spec_name: &str, spec_body: LogicBody) -> TokenStrea
     let styled_spec_name = format!(
         "<span style=\"color:{spec_color}; white-space:nowrap;\"><samp>{spec_name}</samp></span>"
     );
-    let spec = match spec_body {
+    let mut spec = match spec_body {
         LogicBody::Some(s) if !s.is_empty() => s,
         _ => {
             let spec = if matches!(spec_body, LogicBody::Opaque) {
@@ -43,34 +43,6 @@ pub(crate) fn document_spec(spec_name: &str, spec_body: LogicBody) -> TokenStrea
                 #[cfg_attr(not(doctest), doc = "")]
             };
         }
-    };
-    let mut spec = {
-        let mut span = None;
-        for t in spec {
-            match span {
-                None => span = Some(t.span()),
-                Some(s) => span = s.join(t.span()),
-            }
-        }
-        let mut res = span.unwrap_or(proc_macro::Span::call_site()).source_text().unwrap();
-        // hack to handle logic functions
-        if res.starts_with("{\n") && res.ends_with("}") {
-            let body = res[2..res.len() - 1].trim_end();
-            let mut leading_whitespace = usize::MAX;
-            for line in body.lines() {
-                leading_whitespace =
-                    std::cmp::min(leading_whitespace, line.len() - line.trim_start().len());
-            }
-            let mut trimmed_res = String::new();
-            for (i, line) in body.lines().enumerate() {
-                if i != 0 {
-                    trimmed_res.push('\n');
-                }
-                trimmed_res.push_str(&line[leading_whitespace..]);
-            }
-            res = trimmed_res;
-        }
-        res
     };
 
     if spec.len() > 80 - spec_name.len() || spec.contains('\n') {
@@ -94,6 +66,117 @@ pub(crate) fn document_spec(spec_name: &str, spec_body: LogicBody) -> TokenStrea
             #[cfg_attr(not(doctest), doc = "")]
         }
     }
+}
+
+impl LogicBody {
+    // `term_prefix_len`: length of the prefix before the term (`"#[requires("`, `"#[ensures("`)
+    // Set it to 0 if you don't know.
+    pub(crate) fn term(term_prefix_len: usize, term: TS1) -> LogicBody {
+        // We want to find the indentation of terms in the following contexts:
+        // ```
+        //     #[requires(match x {
+        //         p => e,
+        //     })]
+        // ```
+        // and
+        // ```
+        //     #[requires(
+        //         match x {
+        //             p => e,
+        //         }
+        //     )]
+        // ```
+        // There is no way to access the span of the prefix (`#[requires(` or other) before the term,
+        // so we guess based on whether the starting column is less indented than the rest of the term.
+        let term = skip_braces(term);
+        let span = match stream_span(term) {
+            None => return LogicBody::Some("/* Macro-generated */".into()),
+            Some(span) if weird_span(span) => {
+                return LogicBody::Some("/* Macro-generated */".into());
+            }
+            Some(span) => span,
+        };
+        let Some(body) = span.source_text() else {
+            return LogicBody::Some("/* Macro-generated */".into());
+        };
+        let first_indent = span.column() - 1;
+        let mut leading_whitespace = usize::MAX;
+        for line in body.lines().skip(1) {
+            leading_whitespace =
+                std::cmp::min(leading_whitespace, line.len() - line.trim_start().len());
+        }
+        leading_whitespace = if first_indent <= leading_whitespace {
+            first_indent
+        } else {
+            // If the first token is more to the right than the rest of the body,
+            // we assume that this is because it is on the same line as the prefix (`#[requires(`...)
+            std::cmp::min(first_indent.saturating_sub(term_prefix_len), leading_whitespace)
+        };
+        let mut res = String::new();
+        let mut lines = body.lines();
+        if let Some(first_line) = lines.next() {
+            res.push_str(first_line);
+        }
+        for line in lines {
+            res.push('\n');
+            res.push_str(&line[leading_whitespace..]);
+        }
+        if res.is_empty() { LogicBody::None } else { LogicBody::Some(res) }
+    }
+}
+
+/// Heuristic to detect nonsense spans arising from joining tokens originating from different macros.
+fn weird_span(s: Span) -> bool {
+    // Allow short spans (sometimes they look okay)
+    if s.end().line() <= s.line() + 5 {
+        return false;
+    }
+    !local_span(s)
+}
+
+/// `true` if the span is contained in the call site
+fn local_span(s: Span) -> bool {
+    let local = Span::call_site();
+    local.local_file() == s.local_file()
+        && lt_line_column(local.start(), s.start())
+        && lt_line_column(s.end(), local.end())
+}
+
+fn lt_line_column(s1: Span, s2: Span) -> bool {
+    (s1.line(), s1.column()) <= (s2.line(), s2.column())
+}
+
+/// Skip outer braces `{}`, parentheses `()`, and `pearlite! {}`
+fn skip_braces(mut stream: TS1) -> TS1 {
+    loop {
+        let tokens = stream.clone().into_iter().collect::<Vec<_>>();
+        if let [TokenTree::Group(group)] = &tokens[..]
+            && matches!(group.delimiter(), Delimiter::Parenthesis | Delimiter::Brace)
+        {
+            // Skip `{}` and `()`
+            stream = group.stream()
+        } else if let [TokenTree::Ident(ident), TokenTree::Punct(punct), TokenTree::Group(group)] =
+            &tokens[..]
+            && ident.to_string() == "pearlite"
+            && punct.as_char() == '!'
+        {
+            // Skip `pearlite! {}`
+            stream = group.stream()
+        } else {
+            return stream;
+        }
+    }
+}
+
+fn stream_span(stream: TS1) -> Option<Span> {
+    let mut span = None;
+    for t in stream {
+        match span {
+            None => span = Some(t.span()),
+            Some(s) => span = s.join(t.span()),
+        }
+    }
+    span
 }
 
 pub(crate) fn is_opaque(attrs: &[Attribute]) -> bool {
