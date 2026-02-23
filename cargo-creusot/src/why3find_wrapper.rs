@@ -98,26 +98,36 @@ fn raw_prove(args: ProveArgs, paths: &CreusotPaths, files: &[PathBuf]) -> Result
         )
 }
 
-pub fn why3find_prove(args: ProveArgs, root: &PathBuf) -> Result<()> {
+pub fn why3find_prove(args: ProveArgs, root: &PathBuf, targets: Vec<String>) -> Result<()> {
     let paths = creusot_paths();
     check_why3_conf_exists(&paths)?;
     check_why3find_json_exists(root)?;
-    let patterns =
-        args.patterns.iter().map(|s| Pattern::parse(root, s)).collect::<Result<Patterns>>()?;
-    let files = match_patterns(&patterns)?;
+    let files = if args.patterns.is_empty() {
+        let verif = root.join("verif");
+        targets.iter().map(|tgt| verif.join(tgt)).collect()
+    } else {
+        let patterns =
+            args.patterns.iter().map(|s| Pattern::parse(root, s)).collect::<Result<Patterns>>()?;
+        let files = match_patterns(&patterns)?;
+        files
+    };
     if files.is_empty() {
         // Fail if no files matched the patterns.
         // Note: if no patterns is supplied, then `files` will be `["verif/"]`
         // so `why3find` will be successfully called even if there are no coma files under `verif/`.
         bail!("No files to prove")
     }
-    // Validate `--ide-always`: it only works with a single Coma file.
-    let coma = if !args.ide.ide_always {
-        None
-    } else if files.len() == 1 && files[0].extension() == Some(OsStr::new("coma")) {
-        Some(files[0].clone())
+    let coma = if args.ide.ide_always {
+        // Validate `--ide-always`: it only works with a single Coma file.
+        if args.patterns.is_empty() {
+            bail!("--ide-always requires an explicit file or pattern argument")
+        } else if files.len() == 1 && files[0].extension() == Some(OsStr::new("coma")) {
+            Some(files[0].clone())
+        } else {
+            bail!("The flag --ide-always requires exacly one Coma file argument");
+        }
     } else {
-        return Err(anyhow!("The flag --ide-always requires exacly one Coma file argument"));
+        None
     };
     // If the proof fails, we still want to run the IDE if `--ide-always` was set.
     let prove_result = raw_prove(args, &paths, &files);

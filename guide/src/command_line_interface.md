@@ -17,7 +17,7 @@
 ### `creusot`
 
 ```
-cargo creusot [--erasure-check] [-- [-p <CRATE>]]
+cargo creusot [--erasure-check] [-p <PACKAGE>]
 ```
 
 Run the Creusot compiler.
@@ -31,17 +31,44 @@ Output Coma code in the `verif/` directory.
     + `--erasure-check=no`: Disable `#[erasure]` checks.
     + `--erasure-check=warn` (default): Report `#[erasure]` check failures as warnings.
 
+- `-p <PACKAGE>`: Only build `<PACKAGE>` (in multi-package workspaces).
+    By default, all *default members* of a workspace are built, determined by one of the
+    following configurations, in decreasing order of priority:
+
+    + the `default-members` field of `[workspace.metadata.creusot]` in `Cargo.toml`
+
+        ```toml
+        [workspace.metadata.creusot]
+        default-members = ["package1", "package2"]
+        ```
+
+    + [the `default-members` field][cargo-default-members] of `[workspace]` in `Cargo.toml`
+
+        ```toml
+        [workspace]
+        default-members = ["package1", "package2"]
+        ```
+
+    + if neither of these fields exists, then the default members are---as
+      defined by [Cargo][cargo-default-members]---either just the root package,
+      if it exists, or all members of the workspace.
+
+    Within a package, Creusot only compiles **libraries and binaries**.
+    Tests, examples, and benches are currently unsupported.
+    (Please reach out if you need this feature!)
+
+[cargo-default-members]: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-default-members-field
+
 #### Cargo options
 
 All options after `--` are forwarded to `cargo`. Here is a selection of useful ones for Creusot users:
 
-- `-p <CRATE>`: Compile a specific crate `<CRATE>` in a multi-crate project.
 - `-Zbuild-std`: Recompile crates `core`, `std`, `alloc`, `proc-macro`. (Useful for `--erasure-check`.)
 
 ### `prove`
 
 ```
-cargo creusot prove [<PATTERNS>] [-i|--ide-on-fail|--ide-always] [--replay] [--why3session]
+cargo creusot prove [<PATTERNS>] [-i|--ide-on-fail|--ide-always] [--replay] [--why3session] [-p <PACKAGE>]
 ```
 
 Verify contracts.
@@ -60,6 +87,7 @@ and tries to prove them.
   The command fails if `<PATTERN>` does not match exactly one file.
 - `--replay`: Don't generate new proofs, only check if the existing proofs are valid.
 - `--why3session`: Generate `why3session.xml` files (implied by `-i` and `--ide-always`).
+- `-p <PACKAGE>`: See [`cargo creusot`](#creusot) above.
 
 ### `doc`
 

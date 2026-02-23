@@ -1,8 +1,9 @@
-use anyhow::{Context as _, Result, bail};
-use cargo_metadata::semver::Version;
+use anyhow::{Context as _, Result, anyhow, bail};
+use cargo_metadata::{Metadata, Package, TargetKind, semver::Version};
 use clap::*;
 use creusot_args::{CREUSOT_RUSTC_ARGS, options::CreusotArgs};
 use creusot_setup as setup;
+use serde::Deserialize;
 use std::{
     env,
     ffi::OsString,
@@ -23,12 +24,12 @@ fn main() -> Result<()> {
     let cargs = CargoCreusotCmds::parse_from(std::env::args().skip(1));
 
     match cargs.subcommand {
-        None => creusot(None, cargs.args, &workspace_root()?),
-        Some(Creusot(subcmd)) => creusot(Some(subcmd), cargs.args, &workspace_root()?),
+        None => creusot(None, cargs.args, &workspace_root()?).map(|_| ()),
+        Some(Creusot(subcmd)) => creusot(Some(subcmd), cargs.args, &workspace_root()?).map(|_| ()),
         Some(Prove(args)) => {
             let root = workspace_root()?;
-            creusot(None, cargs.args, &root)?;
-            why3find_prove(args, &root)
+            let targets = creusot(None, cargs.args, &root)?;
+            why3find_prove(args, &root, targets)
         }
         Some(New(args)) => new(args),
         Some(Init(args)) => init(args),
@@ -39,23 +40,45 @@ fn main() -> Result<()> {
     }
 }
 
-fn creusot(subcmd: Option<Doc>, args: CargoCreusotArgs, root: &PathBuf) -> Result<()> {
+fn creusot(subcmd: Option<Doc>, args: CargoCreusotArgs, root: &PathBuf) -> Result<Vec<String>> {
+    let metadata = cargo_metadata::MetadataCommand::new().exec()?;
     if !args.no_check_version {
-        check_contracts_version()?;
+        check_contracts_version(&metadata)?;
     }
     let mut creusot_args = args.creusot_args;
     if !creusot_args.erasure_check.is_no() && creusot_args.erasure_check_dir.is_none() {
         creusot_args.erasure_check_dir = Some(root.join("_creusot_erasure"));
     }
-    invoke_cargo(subcmd, creusot_args, args.creusot_rustc, args.cargo_flags, root);
+    let packages = if args.package.is_empty() {
+        creusot_default_members(&metadata)?
+    } else {
+        get_packages_by_name(&metadata, args.package)?
+    };
+    invoke_cargo(subcmd, creusot_args, args.creusot_rustc, &packages, args.cargo_flags, root);
     warn_if_dangling()?;
-    Ok(())
+    let targets = packages
+        .into_iter()
+        .flat_map(|package| {
+            package.targets.iter().flat_map(|target| {
+                target.kind.iter().filter_map(|kind| {
+                    let ty = match kind {
+                        TargetKind::Lib | TargetKind::RLib => "rlib",
+                        TargetKind::Bin => "bin",
+                        _ => return None, // Other types are unsupported at the moment
+                    };
+                    Some(format!("{}_{}", target.name.replace('-', "_"), ty))
+                })
+            })
+        })
+        .collect();
+    Ok(targets)
 }
 
 fn invoke_cargo(
     doc: Option<Doc>,
     args: CreusotArgs,
     creusot_rustc: Option<PathBuf>,
+    packages: &[&Package],
     cargo_flags: Vec<String>,
     root: &PathBuf,
 ) {
@@ -91,6 +114,11 @@ fn invoke_cargo(
         .env("RUSTUP_TOOLCHAIN", toolchain)
         .env("RUSTC", creusot_rustc_path)
         .env("CARGO_CREUSOT", "1");
+
+    for package in packages {
+        cmd.args(["-p", &package.name]);
+    }
+
     // Incremental compilation causes Creusot to not see all of a crate's code
     // (the `mir_borrowck` hook in `creusot/src/callbacks.rs` is not called on all closures).
     cmd.env("CARGO_INCREMENTAL", "0");
@@ -129,6 +157,62 @@ fn workspace_root() -> Result<PathBuf> {
     Ok(path)
 }
 
+/// Get default members to build:
+/// either `default-members` in `[workspace.metadata.creusot]`,
+/// or get the default members from Cargo.
+fn creusot_default_members(metadata: &Metadata) -> Result<Vec<&Package>> {
+    match get_explicit_default_members(metadata)? {
+        None => Ok(metadata.workspace_packages()),
+        Some(members) => Ok(members),
+    }
+}
+
+/// Get `default-members` from `[workspace.metadata.creusot]`
+/// Return `Ok(None)` if the field doesn't exist (so we should fallback to the workspace `default-members`)
+/// Return `Err` if the field exist but is invalid (wrong format or unknown packages).
+fn get_explicit_default_members(metadata: &Metadata) -> Result<Option<Vec<&Package>>> {
+    let custom = &metadata.workspace_metadata;
+    let Some(creusot) = custom.get("creusot") else { return Ok(None) };
+    check_workspace_metadata(creusot);
+    let Some(members) = creusot.get("default-members") else { return Ok(None) };
+    let members = <Vec<String>>::deserialize(members)?;
+    get_packages_by_name(metadata, members).map(|packages| Some(packages))
+}
+
+fn check_workspace_metadata(value: &serde_json::Value) {
+    match value {
+        serde_json::Value::Object(map) => {
+            for (k, _) in map {
+                if k != "default-members" {
+                    start_warning();
+                    eprintln!(
+                        ": in [workspace.metadata.creusot], unexpected field {k:?} (expected \"default-members\")"
+                    )
+                }
+            }
+        }
+        _ => {
+            start_warning();
+            eprintln!(
+                ": in [workspace.metadata.creusot], unexpected value (expected object with key \"default-members\")"
+            )
+        }
+    }
+}
+
+fn get_packages_by_name(metadata: &Metadata, names: Vec<String>) -> Result<Vec<&Package>> {
+    names
+        .into_iter()
+        .map(|member| {
+            metadata
+                .workspace_packages()
+                .into_iter()
+                .find(|p| p.name == member)
+                .ok_or_else(|| anyhow!("Package not found {}", member))
+        })
+        .collect()
+}
+
 #[derive(Debug, Parser)]
 pub struct CargoCreusotCmds {
     /// Subcommand: why3, setup
@@ -149,6 +233,8 @@ pub struct CargoCreusotArgs {
     /// Path to creusot-rustc (for testing and for Nix)
     #[clap(long, value_name = "PATH", env = "CREUSOT_RUSTC")]
     pub creusot_rustc: Option<PathBuf>,
+    #[clap(long, short = 'p', value_name = "PACKAGE")]
+    pub package: Vec<String>,
     /// Additional flags to pass to the underlying cargo invocation.
     #[clap(last = true, global = true)]
     pub cargo_flags: Vec<String>,
@@ -233,13 +319,8 @@ fn clean(options: CleanArgs) -> Result<()> {
 /// Print a warning if there are dangling files in `verif/`
 fn warn_if_dangling() -> Result<()> {
     let dangling = find_dangling(&PathBuf::from(OUTPUT_PREFIX))?;
-    let is_tty = std::io::stdout().is_terminal();
     if !dangling.is_empty() {
-        if is_tty {
-            eprint!("\x1b[33mWarning\x1b[0m");
-        } else {
-            eprint!("Warning");
-        }
+        start_warning();
         eprintln!(": found dangling files and directories:");
         for path in dangling {
             eprintln!("  {}", path.display());
@@ -247,6 +328,15 @@ fn warn_if_dangling() -> Result<()> {
         eprintln!("Run 'cargo creusot clean' to remove them");
     }
     Ok(())
+}
+
+fn start_warning() {
+    let is_tty = std::io::stdout().is_terminal();
+    if is_tty {
+        eprint!("\x1b[33mWarning\x1b[0m");
+    } else {
+        eprint!("Warning");
+    }
 }
 
 enum FileOrDirectory {
@@ -334,11 +424,11 @@ fn find_dangling_rec(dir: &PathBuf) -> Result<Option<Vec<FileOrDirectory>>> {
     if all_dangling { Ok(None) } else { Ok(Some(dangling)) }
 }
 
-fn check_contracts_version() -> Result<()> {
+fn check_contracts_version(metadata: &Metadata) -> Result<()> {
     use std::cmp::Ordering;
     // The cargo-creusot version should be the same as the creusot-std version
     let self_version = Version::parse(CREUSOT_STD_VERSION)?;
-    let contracts_version = get_contracts_version()?;
+    let contracts_version = get_contracts_version(metadata)?;
     let err = |msg, fixes| {
         bail!(
             r"{msg}
@@ -360,11 +450,10 @@ fn check_contracts_version() -> Result<()> {
     }
 }
 
-fn get_contracts_version() -> Result<Version> {
-    let metadata = cargo_metadata::MetadataCommand::new().exec()?;
-    for package in metadata.packages {
+fn get_contracts_version(metadata: &Metadata) -> Result<&Version> {
+    for package in &metadata.packages {
         if package.name == "creusot-std" {
-            return Ok(package.version);
+            return Ok(&package.version);
         }
     }
     Err(anyhow::anyhow!("creusot-std not found in dependencies"))
