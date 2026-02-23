@@ -11,6 +11,15 @@ impl View for str {
     }
 }
 
+impl DeepModel for str {
+    type DeepModelTy = Seq<char>;
+
+    #[logic]
+    fn deep_model(self) -> Self::DeepModelTy {
+        self.view()
+    }
+}
+
 #[cfg(feature = "std")]
 impl View for String {
     type ViewTy = Seq<char>;
@@ -18,6 +27,16 @@ impl View for String {
     #[logic(opaque)]
     fn view(self) -> Self::ViewTy {
         dead
+    }
+}
+
+#[cfg(feature = "std")]
+impl DeepModel for String {
+    type DeepModelTy = Seq<char>;
+
+    #[logic]
+    fn deep_model(self) -> Self::DeepModelTy {
+        self.view()
     }
 }
 
