@@ -1,3 +1,4 @@
+// SHORT_ERROR
 extern crate creusot_std;
 use creusot_std::prelude::PartialEq;
 
