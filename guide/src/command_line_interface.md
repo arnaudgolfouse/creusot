@@ -68,7 +68,7 @@ All options after `--` are forwarded to `cargo`. Here is a selection of useful o
 ### `prove`
 
 ```
-cargo creusot prove [<PATTERNS>] [-i|--ide-on-fail|--ide-always] [--replay] [--why3session] [-p <PACKAGE>]
+cargo creusot [-p <PACKAGE>] prove [<PATTERNS>] [-i|--ide-on-fail|--ide-always] [--replay] [--why3session]
 ```
 
 Verify contracts.
