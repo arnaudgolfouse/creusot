@@ -104,7 +104,13 @@ pub fn why3find_prove(args: ProveArgs, root: &PathBuf, targets: Vec<String>) -> 
     check_why3find_json_exists(root)?;
     let files = if args.patterns.is_empty() {
         let verif = root.join("verif");
-        targets.iter().map(|tgt| verif.join(tgt)).collect()
+        targets
+            .iter()
+            .filter_map(|tgt| {
+                let path = verif.join(tgt);
+                if let Ok(true) = std::fs::exists(&path) { Some(path) } else { None }
+            })
+            .collect()
     } else {
         let patterns =
             args.patterns.iter().map(|s| Pattern::parse(root, s)).collect::<Result<Patterns>>()?;
