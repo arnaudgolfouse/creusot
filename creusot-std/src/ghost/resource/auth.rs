@@ -4,7 +4,7 @@ use crate::{
         Id,
         ra::{
             UnitRA,
-            auth::{Auth, AuthUpdate},
+            auth::{Auth, AuthIncrease, AuthUpdate},
             update::LocalUpdate,
         },
     },
@@ -115,6 +115,19 @@ impl<R: UnitRA> Authority<R> {
         self.0.update(AuthUpdate(upd));
         let rs = snapshot!((Auth::new_frag(self.0@.frag()), Auth::new(self.0@.auth(), R::unit())));
         frag.0 = self.0.split_off(snapshot!(rs.0), snapshot!(rs.1));
+    }
+
+    /// Add a piece to the authority, and return a new fragment corresponding to this piece.
+    #[check(ghost)]
+    #[requires(self@.op(*frag) != None)]
+    #[ensures((^self)@ == self@.op(*frag).unwrap_logic())]
+    #[ensures(result@ == *frag)]
+    #[ensures(result.id() == self.id() && (^self).id() == self.id())]
+    #[allow(unused_variables)]
+    pub fn add_fragment(&mut self, frag: Snapshot<R>) -> Fragment<R> {
+        let mut unit: Fragment<R> = Fragment::new_unit(self.id_ghost());
+        self.update(&mut unit, AuthIncrease(frag));
+        unit
     }
 
     /// Asserts that the fragment represented by `frag` is contained in `self`.
