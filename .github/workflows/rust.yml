@@ -74,24 +74,37 @@ jobs:
 
   build-nix:
     runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1 # Allow the use of unfree software (Alt-Ergo)
     permissions:
       actions: write # Allow to purge the cache
     steps:
     - uses: actions/checkout@v5
     - uses: nixbuild/nix-quick-install-action@v34
+
     - uses: nix-community/cache-nix-action@v6
       with:
         primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
         gc-max-store-size: 10G
         purge: true
+
+    - name: Check framework versions
+      run: |
+        cargo_version () { grep "$1_VERSION" creusot-setup/src/tools_versions_urls.rs | cut -d '"' -f2; }
+        opam_version () { cat creusot-deps.opam | grep -m 1 $1 | cut -d '"' -f 4 | cut -c5-; }
+        nix_version () { nix eval --json --impure .#why3Framework.passthru."$1".version | cut -d '"' -f2; }
+        [[ $(nix_version why3) == "$(opam_version why3)"* ]]
+        [[ $(nix_version why3find) == "$(opam_version why3find)"* ]]
+        [[ $(nix_version alt-ergo) == $(cargo_version ALTERGO) ]]
+        [[ $(nix_version cvc4) == $(cargo_version CVC4) ]]
+        [[ $(nix_version cvc5) == $(cargo_version CVC5) ]]
+        [[ $(nix_version z3) == $(cargo_version Z3) ]]
+
     - name: Build
       run: nix build --impure . --print-build-logs
-      env:
-        NIXPKGS_ALLOW_UNFREE: 1
+
     - name: Run tests
       run: nix shell --impure --command bash -c "cd .. && cargo creusot new test-project && cd test-project && cargo creusot prove"
-      env:
-        NIXPKGS_ALLOW_UNFREE: 1
 
   erasure-check:
     runs-on: ubuntu-latest
