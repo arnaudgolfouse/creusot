@@ -28,13 +28,13 @@
 
       pins = {
         why3 = {
-          version = "51e0579b3561f51a305069042dd9fba56154e600";
-          sha256 = "sha256-KNna+AEDwvc9AWWLiyTbofk2lAwa99Z/9d443McfG9c=";
+          version = "56a157605dad7403f5d6b8534ed1f89ea67dde96";
+          sha256 = "sha256-NQdF3TJCf+TTRG8YpwMhCxQ6UaXxHb+ic/AXjLBY3pU=";
         };
 
         why3find = {
-          version = "833defb466008b37511bb503e671704b8ce2b192";
-          sha256 = "sha256-h0YzvsQ6s+Z6ImHXlKa856gDRE1ZsEP8T+ztdg5Rsiw=";
+          version = "3a98fc320b9cbf2e71860da1c8dc188a966eee96";
+          sha256 = "sha256-BKhm9HNlJnEhGFChYDdoieAz319YBRqcCPRt+7RSvSI=";
         };
 
         alt-ergo = {
