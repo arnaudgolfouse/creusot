@@ -52,7 +52,7 @@ pub struct ConfigArgs {
     pub args: Vec<String>,
 }
 
-fn check_why3find_json_exists(root: &PathBuf) -> Result<()> {
+fn check_why3find_json_exists(root: &Path) -> Result<()> {
     let why3find = root.join("why3find.json");
     if why3find.exists() {
         Ok(())
@@ -98,13 +98,21 @@ fn raw_prove(args: ProveArgs, paths: &CreusotPaths, files: &[PathBuf]) -> Result
         )
 }
 
-pub fn why3find_prove(args: ProveArgs, root: &PathBuf, targets: Vec<String>) -> Result<()> {
+pub fn why3find_prove(args: ProveArgs, root: &Path, targets: Vec<String>) -> Result<()> {
     let paths = creusot_paths();
     check_why3_conf_exists(&paths)?;
     check_why3find_json_exists(root)?;
+    // why3find likes relative paths. For that we move back to the root.
+    std::env::set_current_dir(root)?;
     let files = if args.patterns.is_empty() {
-        let verif = root.join("verif");
-        targets.iter().map(|tgt| verif.join(tgt)).collect()
+        let verif = PathBuf::from("verif");
+        targets
+            .iter()
+            .filter_map(|tgt| {
+                let path = verif.join(tgt);
+                if let Ok(true) = std::fs::exists(&path) { Some(path) } else { None }
+            })
+            .collect()
     } else {
         let patterns =
             args.patterns.iter().map(|s| Pattern::parse(root, s)).collect::<Result<Patterns>>()?;
