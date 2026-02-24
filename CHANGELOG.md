@@ -12,6 +12,8 @@ Creusot is currently best suited for the verification of code like data-structur
 
 ## [Unreleased] - ReleaseDate
 
+## [0.10.0] - 2026-02-24
+
 ## Main new features
 
 - [Allow `#[trusted]` on `proof_assert`](https://github.com/creusot-rs/creusot/pull/1904)
