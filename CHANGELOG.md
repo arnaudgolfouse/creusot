@@ -12,6 +12,57 @@ Creusot is currently best suited for the verification of code like data-structur
 
 ## [Unreleased] - ReleaseDate
 
+## [0.10.0] - 2026-02-24
+
+## Main new features
+
+- [Allow `#[trusted]` on `proof_assert`](https://github.com/creusot-rs/creusot/pull/1904)
+- [Add assumptions for wildcard patterns on integer match](https://github.com/creusot-rs/creusot/pull/1899)
+- [Add options to select packages in workspaces: `--package` and `default-members`](https://github.com/creusot-rs/creusot/pull/1945)
+
+## `creusot-std`
+
+- [Implement `OrdLogic` for `PositiveReal`](https://github.com/creusot-rs/creusot/pull/1938)
+- [Add `DeepModel` for `str` and `String`](https://github.com/creusot-rs/creusot/pull/1946)
+- [Make `NonAtomicInvariant` invariant and non-`Sync`](https://github.com/creusot-rs/creusot/pull/1941)
+- [Specify `MaybeUninit`](https://github.com/creusot-rs/creusot/pull/1939)
+- [Specify more methods on `Option`](https://github.com/creusot-rs/creusot/pull/1930)
+- [Allow user implementation of `Plain`](https://github.com/creusot-rs/creusot/pull/1927)
+- [Add requirements for Relaxed memory feature](https://github.com/creusot-rs/creusot/pull/1929)
+- [Replace `FMap` iterators with `FMap`, hide `logic::{fmap, fset}`](https://github.com/creusot-rs/creusot/pull/1915) (+ [#1913](https://github.com/creusot-rs/creusot/pull/1913))
+- [Pointer operations on `Rc` and `Arc`](https://github.com/creusot-rs/creusot/pull/1914)
+- [Improve specs of bitwise operations](https://github.com/creusot-rs/creusot/pull/1839)
+- [Total core fragment](https://github.com/creusot-rs/creusot/pull/1882)
+- [`Map::produces` do not need to mention preconditions](https://github.com/creusot-rs/creusot/pull/1878)
+- [Better automation for RAs](https://github.com/creusot-rs/creusot/pull/1877)
+
+## Documentation and examples
+
+- [Fix indentation of Pearlite terms in creusot doc](https://github.com/creusot-rs/creusot/pull/1944)
+- [Improve doc of requires, ensures, and all kinds of invariants](https://github.com/creusot-rs/creusot/pull/1942)
+- [Fix documentation of logical functions](https://github.com/creusot-rs/creusot/pull/1934)
+- [Parallel add example: new version with n threads](https://github.com/creusot-rs/creusot/pull/1879)
+
+## Cargo creusot
+
+- [Improve labels of goals](https://github.com/creusot-rs/creusot/pull/1890)
+- [Try Alt-ergo and Z3 before CVC5 and CVC4](https://github.com/creusot-rs/creusot/pull/1931)
+- [Improve handling of `--package` option](https://github.com/creusot-rs/creusot/pull/1948)
+- [Fix path to prelude in why3 invocation](https://github.com/creusot-rs/creusot/pull/1889)
+- [Upgrade Why3 and Why3find](https://github.com/creusot-rs/creusot/pull/1897)
+- [Update toolchain to 2026-01-29](https://github.com/creusot-rs/creusot/pull/1853)
+
+## Install script
+
+- [Add `--dry-run` option](https://github.com/creusot-rs/creusot/pull/1891)
+- [Handle copying binaries over broken symlinks during installation](https://github.com/creusot-rs/creusot/pull/1943)
+
+## Fixes
+
+- [Fix translation of negative integer patterns](https://github.com/creusot-rs/creusot/pull/1901)
+- [Fix dummy `ghost!`: don't insert `check(ghost)`](https://github.com/creusot-rs/creusot/pull/1918)
+- [Remove dead locals: do not remove locals used in a `RValue::Ptr`](https://github.com/creusot-rs/creusot/pull/1926)
+
 ## [0.9.0] - 2026-01-10
 
 ### New features
