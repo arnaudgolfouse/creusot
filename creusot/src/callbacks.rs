@@ -131,8 +131,9 @@ impl Callbacks for ToWhy {
     }
 }
 
-fn copy_mir_bodies<'tcx, 'a>(tcx: TyCtxt<'tcx>, def_id: LocalDefId) {
+fn copy_mir_bodies<'tcx>(tcx: TyCtxt<'tcx>, def_id: LocalDefId) {
     let opts = ConsumerOptions::RegionInferenceContext;
+    tcx.dcx().abort_if_errors(); // The following can crash if we did not pass type-checking
     let bodies_with_facts =
         rustc_borrowck::consumers::get_bodies_with_borrowck_facts(tcx, def_id, opts);
 
