@@ -20,9 +20,13 @@ pub mod invariant;
 pub mod lifetime_logic;
 pub mod perm;
 pub mod resource;
+mod shared;
 
-pub use fn_ghost::{FnGhost, FnGhostWrapper};
-pub use perm::Container;
+pub use self::{
+    fn_ghost::{FnGhost, FnGhostWrapper},
+    perm::Container,
+    shared::GhostShared,
+};
 
 use crate::{logic::ops::Fin, prelude::*};
 use core::{

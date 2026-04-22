@@ -224,6 +224,16 @@
  <proof prover="0" timelimit="0.5"><result status="valid" time="0.006899" steps="8379"/></proof>
  </goal>
 </theory>
+<theory name="M_ghost__shared__impl_Clone_for_GhostShared_T__clone" proved="true">
+ <goal name="vc_clone_GhostShared_T" proved="true">
+ <proof prover="2" timelimit="1"><result status="valid" time="0.020594" steps="42"/></proof>
+ </goal>
+</theory>
+<theory name="M_ghost__shared__impl_Deref_for_GhostShared_T__deref" proved="true">
+ <goal name="vc_deref_GhostShared_T" proved="true">
+ <proof prover="2" timelimit="1"><result status="valid" time="0.019525" steps="42"/></proof>
+ </goal>
+</theory>
 <theory name="M_ghost__impl_Clone_for_Ghost_T__clone" proved="true">
  <goal name="vc_clone_Ghost_T" proved="true">
  <proof prover="3" timelimit="5"><result status="valid" time="0.027056" steps="0"/></proof>
@@ -6894,6 +6904,11 @@
 <theory name="M_ghost__fn_ghost__impl_Clone_for_FnGhostWrapper_F__clone__refines" proved="true">
  <goal name="refines" proved="true">
  <proof prover="2"><result status="valid" time="0.015365" steps="336"/></proof>
+ </goal>
+</theory>
+<theory name="M_ghost__shared__impl_Clone_for_GhostShared_T__clone__refines" proved="true">
+ <goal name="refines" proved="true">
+ <proof prover="2" timelimit="1"><result status="valid" time="0.019891" steps="90"/></proof>
  </goal>
 </theory>
 <theory name="M_ghost__impl_Clone_for_Ghost_T__clone__refines" proved="true">
